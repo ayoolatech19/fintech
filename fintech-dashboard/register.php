@@ -1,3 +1,12 @@
+<?php 
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "fintech";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+?>
+
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -124,25 +133,25 @@
                 <p class="auth-subtitle">Join FinTech Pro and start managing your finances</p>
             </div>
             
-            <form id="registerForm" onsubmit="return handleRegister(event)">
+            <form id="registerForm" method="post"  onsubmit="return handleRegister(event)">
                 <div class="form-group">
                     <label class="form-label">Full Name</label>
-                    <input type="text" class="form-control" placeholder="Enter your full name" required>
+                    <input type="text" name="fullname" class="form-control" placeholder="Enter your full name" required>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Email Address</label>
-                    <input type="email" class="form-control" placeholder="Enter your email" required>
+                    <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Phone Number</label>
-                    <input type="tel" class="form-control" placeholder="+1 234 567 8900" required>
+                    <input type="tel" name="phonenumber" class="form-control" placeholder="+1 234 567 8900" required>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" class="form-control" placeholder="Create a password" required>
+                    <input type="password" name="password"  class="form-control" placeholder="Create a password" required>
                 </div>
                 
                 <div class="form-group">
@@ -160,7 +169,7 @@
                     </label>
                 </div>
                 
-                <button type="submit" class="btn btn-primary w-full btn-lg">
+                <button type="submit" name="create" class="btn btn-primary w-full btn-lg">
                     <i class="fas fa-user-plus"></i> Create Account
                 </button>
             </form>
@@ -185,7 +194,7 @@
     </div>
     
     <script src="assets/js/main.js"></script>
-    <script>
+    <!-- <script>
         function handleRegister(event) {
             event.preventDefault();
             
@@ -206,6 +215,29 @@
             
             return false;
         }
-    </script>
+    </script> -->
 </body>
 </html>
+
+<?php
+if (isset($_POST['create'])) {
+
+    $fullname=  $_POST['fullname'];
+     $email= $_POST['email'];
+     $phone= $_POST['phonenumber'];
+     $password= $_POST['password'];
+
+
+
+    $sql = "INSERT INTO signup (fullname,email,phone,passwords)
+            VALUES ('$fullname','$email','$phone','$password')";
+
+    if (mysqli_query($conn, $sql))
+       {
+        echo "Account created Successfully";
+    } else {
+      echo "Not successfully";
+    }
+
+}
+?>

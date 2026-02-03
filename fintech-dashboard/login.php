@@ -1,3 +1,11 @@
+<?php 
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "fintech";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+?>
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -126,12 +134,12 @@
             <form id="loginForm" onsubmit="return handleLogin(event)">
                 <div class="form-group">
                     <label class="form-label">Email Address</label>
-                    <input type="email" class="form-control" placeholder="Enter your email" required>
+                    <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Password</label>
-                    <input type="password" class="form-control" placeholder="Enter your password" required>
+                    <input type="password"name="password" class="form-control" placeholder="Enter your password" required>
                 </div>
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
@@ -142,7 +150,7 @@
                     <a href="forgot-password.php" style="color: var(--primary-blue); font-size: 14px; font-weight: 600;">Forgot Password?</a>
                 </div>
                 
-                <button type="submit" class="btn btn-primary w-full btn-lg">
+                <button type="submit"name="login" class="btn btn-primary w-full btn-lg">
                     <i class="fas fa-sign-in-alt"></i> Login
                 </button>
             </form>
@@ -167,7 +175,7 @@
     </div>
     
     <script src="assets/js/main.js"></script>
-    <script>
+    <!-- <script>
         function handleLogin(event) {
             event.preventDefault();
             
@@ -185,6 +193,40 @@
             
             return false;
         }
-    </script>
+    </script> -->
 </body>
 </html>
+<?php
+if (isset($_POST['login'])) {
+
+    $email  =  $_POST['email'];
+    $password =  $_POST['password'];
+
+    // Match phone AND password
+    $sql = "SELECT * FROM signup
+            WHERE email = '$email' AND passwords = '$password' 
+            ";
+
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) == 1) {
+
+        $user = mysqli_fetch_assoc($result);
+
+        // Save session
+        $_SESSION['user_id']    = $user['id'];
+        $_SESSION['user_name']  = $user['firstname'];
+        $_SESSION['user_phone'] = $user['phone'];
+      
+
+        // // Redirect
+        // header("Location: dashboard.php");
+        // exit();
+echo "login successfully";
+
+    } else {
+        $error = "Invalid phone number or password";
+        echo "invalid details";
+    }
+}
+?>
