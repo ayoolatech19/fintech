@@ -5,7 +5,43 @@ $password = "";
 $database = "fintech";
 
 $conn = mysqli_connect($servername, $username, $password, $database);
+
+if (isset($_POST['login'])) {
+
+    $email  =  $_POST['email'];
+    $password =  $_POST['password'];
+
+    // Match phone AND password
+    $sql = "SELECT * FROM signup
+            WHERE email = '$email' AND passwords = '$password' 
+            ";
+
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) == 1) {
+
+        $user = mysqli_fetch_assoc($result);
+  $role = $user['roles'];
+        // Save session
+        $_SESSION['user_id']    = $user['id'];
+        $_SESSION['user_name']  = $user['fullname'];
+        $_SESSION['user_phone'] = $user['phone'];
+      
+if ($role == 'admin') {
+    header("Location: admin/dashboard.php");
+        exit();
+}
+   else {
+      header("Location: user/dashboard.php");
+        exit();
+   }
+
+ } else {
+        echo "invalid details";
+    }
+    }
 ?>
+
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -131,7 +167,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
                 <p class="auth-subtitle">Login to your FinTech Pro account</p>
             </div>
             
-            <form id="loginForm" onsubmit="return handleLogin(event)">
+            <form id="loginForm" method="post">
                 <div class="form-group">
                     <label class="form-label">Email Address</label>
                     <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
@@ -196,37 +232,4 @@ $conn = mysqli_connect($servername, $username, $password, $database);
     </script> -->
 </body>
 </html>
-<?php
-if (isset($_POST['login'])) {
 
-    $email  =  $_POST['email'];
-    $password =  $_POST['password'];
-
-    // Match phone AND password
-    $sql = "SELECT * FROM signup
-            WHERE email = '$email' AND passwords = '$password' 
-            ";
-
-    $result = mysqli_query($conn, $sql);
-
-    if (mysqli_num_rows($result) == 1) {
-
-        $user = mysqli_fetch_assoc($result);
-
-        // Save session
-        $_SESSION['user_id']    = $user['id'];
-        $_SESSION['user_name']  = $user['firstname'];
-        $_SESSION['user_phone'] = $user['phone'];
-      
-
-        // // Redirect
-        // header("Location: dashboard.php");
-        // exit();
-echo "login successfully";
-
-    } else {
-        $error = "Invalid phone number or password";
-        echo "invalid details";
-    }
-}
-?>
