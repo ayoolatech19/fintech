@@ -1,4 +1,6 @@
 <?php 
+session_start();
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -222,22 +224,41 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 <?php
 if (isset($_POST['create'])) {
 
-    $fullname=  $_POST['fullname'];
-     $email= $_POST['email'];
-     $phone= $_POST['phonenumber'];
-     $password= $_POST['password'];
+    $fullname = $_POST['fullname'];
+    $email    = $_POST['email'];
+    $phone    = $_POST['phonenumber'];
+    $password = $_POST['password'];
 
-
-
+    // 1. Insert user
     $sql = "INSERT INTO signup (fullname,email,phone,passwords)
             VALUES ('$fullname','$email','$phone','$password')";
 
-    if (mysqli_query($conn, $sql))
-       {
-        echo "Account created Successfully";
-    } else {
-      echo "Not successfully";
-    }
+    if (mysqli_query($conn, $sql)) {
 
+        // 2. Get new user id
+        $user_id = mysqli_insert_id($conn);
+
+        // 3. Generate wallet id
+        $wallet_id = rand(1000000000, 9999999999);
+
+        // 4. Insert wallet
+        $wallet_sql = "INSERT INTO wallet (user_id, wallet_id)
+                       VALUES ('$user_id', '$wallet_id')";
+
+        if (mysqli_query($conn, $wallet_sql)) {
+
+            // 5. Save session correctly
+            $_SESSION['user_id'] = $user_id;
+            $_SESSION['wallet_id'] = $wallet_id;
+            $_SESSION['user_name'] = $fullname;
+
+            echo "Account and wallet created successfully!";
+        } else {
+            echo "Wallet creation failed!";
+        }
+
+    } else {
+        echo "Account creation failed!";
+    }
 }
 ?>

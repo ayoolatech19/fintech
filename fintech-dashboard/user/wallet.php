@@ -1,4 +1,4 @@
-<?php 
+<?php
 $page_title = "My Wallet";
 include '../includes/header-user.php'; 
 ?>
@@ -9,7 +9,7 @@ include '../includes/header-user.php';
         <div>
             <p style="opacity: 0.9; margin-bottom: 8px;">Available Balance</p>
             <h2 style="font-size: 42px; font-weight: 700; margin-bottom: 8px;">$24,580.00</h2>
-            <p style="opacity: 0.8; font-size: 14px;">Wallet ID: #FTP-2024-USER-001</p>
+            <p style="opacity: 0.8; font-size: 14px;">Wallet ID: <?php echo $_SESSION['wallet_id'];?></p>
         </div>
         <div style="text-align: right;">
             <button class="btn" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3);" onclick="copyToClipboard('FTP-2024-USER-001')">

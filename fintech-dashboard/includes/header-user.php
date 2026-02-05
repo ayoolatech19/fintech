@@ -1,3 +1,8 @@
+<?php
+
+session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -144,9 +149,25 @@
                     
                     <!-- User Profile -->
                     <div class="user-profile">
-                        <div class="user-avatar">JD</div>
+                    <div class="user-avatar">
+    <?php
+        $name = $_SESSION['user_name'];
+        $words = explode(" ", $name);
+
+        $initials = "";
+
+        foreach ($words as $word) {
+            if (!empty($word)) {
+                $initials .= strtoupper($word[0]);
+            }
+        }
+
+        echo $initials;
+    ?>
+</div>
+
                         <div class="user-info">
-                            <h4>John Doe</h4>
+                            <h4> <?php echo $_SESSION['user_name']; ?></h4>
                             <p>User</p>
                         </div>
                     </div>
