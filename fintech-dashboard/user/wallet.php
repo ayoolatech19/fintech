@@ -1,6 +1,31 @@
 <?php
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "fintech";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+
 $page_title = "My Wallet";
 include '../includes/header-user.php'; 
+$userid = $_SESSION['user_id']; 
+// echo   $userid
+
+
+
+    $sql = "SELECT * FROM wallet 
+            WHERE user_id = '$userid'  
+            ";
+
+    $result = mysqli_query($conn, $sql);
+    $user = mysqli_fetch_assoc($result);
+
+
+
+
+
+
 ?>
 
 <!-- Wallet Balance Card -->
@@ -8,11 +33,11 @@ include '../includes/header-user.php';
     <div style="display: flex; justify-content: space-between; align-items: center;">
         <div>
             <p style="opacity: 0.9; margin-bottom: 8px;">Available Balance</p>
-            <h2 style="font-size: 42px; font-weight: 700; margin-bottom: 8px;">$24,580.00</h2>
-            <p style="opacity: 0.8; font-size: 14px;">Wallet ID: <?php echo $_SESSION['wallet_id'];?></p>
+            <h2 style="font-size: 42px; font-weight: 700; margin-bottom: 8px;"><?php echo $user['wallet_balance'];  ?></h2>
+            <p style="opacity: 0.8; font-size: 14px;">Wallet ID: <?php echo $user['wallet_id'];?></p>
         </div>
         <div style="text-align: right;">
-            <button class="btn" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3);" onclick="copyToClipboard('FTP-2024-USER-001')">
+            <button class="btn" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3);" onclick="copyToClipboard('<?php echo $user['wallet_id'];?>')">
                 <i class="fas fa-copy"></i> Copy ID
             </button>
         </div>

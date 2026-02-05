@@ -248,9 +248,9 @@ if (isset($_POST['create'])) {
         if (mysqli_query($conn, $wallet_sql)) {
 
             // 5. Save session correctly
-            $_SESSION['user_id'] = $user_id;
-            $_SESSION['wallet_id'] = $wallet_id;
-            $_SESSION['user_name'] = $fullname;
+            // $_SESSION['user_id'] = $user_id;
+            // $_SESSION['wallet_id'] = $wallet_id;
+            // $_SESSION['user_name'] = $fullname;
 
             echo "Account and wallet created successfully!";
         } else {

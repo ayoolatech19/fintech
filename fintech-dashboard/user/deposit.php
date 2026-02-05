@@ -1,6 +1,40 @@
 <?php 
 $page_title = "Deposit Funds";
 include '../includes/header-user.php'; 
+
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "fintech";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+
+if (isset($_POST['proceed'])) {
+
+    $deposit=  $_POST['depositmeth'];
+     $amount= $_POST['amount'];
+     $textarea= $_POST['textarea'];
+
+    $sql = "INSERT INTO deposit (deposit_meth,amount,description)
+            VALUES ('$deposit','$amount','$textarea')";
+
+    if ( mysqli_query($conn, $sql))
+       {
+        echo "Registration successful";
+    } else {
+      echo "Not successfully";
+    }
+  
+
+}
+
+
+
+
+
+
+
 ?>
 
 <!-- Alert -->
@@ -16,10 +50,10 @@ include '../includes/header-user.php';
             <h3 class="card-title">Deposit Money</h3>
         </div>
         
-        <form id="depositForm" onsubmit="return handleDeposit(event)">
+        <form id="depositForm" method="POST" onsubmit="return handleDeposit(event)">
             <div class="form-group">
                 <label class="form-label">Deposit Method</label>
-                <select class="form-control" id="depositMethod" required>
+                <select class="form-control" name="depositmeth" id="depositMethod" required>
                     <option value="">Select payment method</option>
                     <option value="bank_transfer">Bank Transfer</option>
                     <option value="card">Credit/Debit Card</option>
@@ -30,13 +64,13 @@ include '../includes/header-user.php';
             
             <div class="form-group">
                 <label class="form-label">Amount</label>
-                <input type="number" class="form-control" id="amount" placeholder="Enter amount" step="0.01" min="10" required>
+                <input type="number" name="amount" class="form-control" id="amount" placeholder="Enter amount" step="0.01" min="10" required>
                 <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 4px;">Minimum deposit: $10.00</p>
             </div>
             
             <div class="form-group">
                 <label class="form-label">Description (Optional)</label>
-                <textarea class="form-control" id="description" placeholder="Add a note about this deposit"></textarea>
+                <textarea class="form-control" name="textarea" id="description" placeholder="Add a note about this deposit"></textarea>
             </div>
             
             <!-- Fee Information -->
@@ -56,7 +90,7 @@ include '../includes/header-user.php';
                 </div>
             </div>
             
-            <button type="submit" class="btn btn-primary w-full">
+            <button type="submit" name="proceed" class="btn btn-primary w-full">
                 <i class="fas fa-check-circle"></i> Proceed to Deposit
             </button>
         </form>
@@ -135,7 +169,7 @@ include '../includes/header-user.php';
         </div>
     </div>
 </div>
-
+<!-- 
 <script>
 // Calculate fees in real-time
 document.getElementById('amount').addEventListener('input', function() {
@@ -173,6 +207,6 @@ function handleDeposit(event) {
     
     return false;
 }
-</script>
+</script> -->
 
 <?php include '../includes/footer.php'; ?>

@@ -1,4 +1,6 @@
 <?php 
+session_start();
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -21,7 +23,7 @@ if (isset($_POST['login'])) {
     if (mysqli_num_rows($result) == 1) {
 
         $user = mysqli_fetch_assoc($result);
-  $role = $user['roles'];
+  
         // Save session
         $_SESSION['user_id']    = $user['id'];
         $_SESSION['user_name']  = $user['fullname'];
