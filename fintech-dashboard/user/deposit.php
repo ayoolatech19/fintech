@@ -25,7 +25,11 @@ if (isset($_POST['proceed'])) {
     } else {
       echo "Not successfully";
     }
-  
+$newprice = $wallet_balance + $_POST['amount']
+
+    $sqli= "UPDATE wallet SET wallet_balance to $newprice Where user_id="$userid";
+
+    $result = mysqli_query($conn, $sqli);
 
 }
 
