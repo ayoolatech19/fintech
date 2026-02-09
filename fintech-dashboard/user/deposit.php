@@ -1,6 +1,9 @@
 <?php 
+
 $page_title = "Deposit Funds";
-include '../includes/header-user.php'; 
+include '../includes/header-user.php';
+
+
 
 
 $servername = "localhost";
@@ -16,29 +19,34 @@ if (isset($_POST['proceed'])) {
      $amount= $_POST['amount'];
      $textarea= $_POST['textarea'];
 
-    $sql = "INSERT INTO deposit (deposit_meth,amount,description)
-            VALUES ('$deposit','$amount','$textarea')";
+     $userid = $_SESSION['user_id']; 
 
-    if ( mysqli_query($conn, $sql))
+
+   $sql = "INSERT INTO deposit (deposit_meth,amount,description)
+            VALUES ('$deposit','$amount','$textarea')";
+     
+     
+     if ( mysqli_query($conn, $sql)){
+
+   $check = "SELECT wallet_balance FROM wallet WHERE user_id='$userid'";
+        $run = mysqli_query($conn, $check);
+        $row = mysqli_fetch_assoc($run);
+
+        $wallet_balance = $row['wallet_balance'];
+
+     $newprice = $wallet_balance +   $amount ;
+
+    $sqli= "UPDATE wallet SET wallet_balance = '$newprice' Where user_id='$userid'";
+
+    // $result = mysqli_query($conn, $sqli);
+
+    if ( mysqli_query($conn, $sqli))
        {
-        echo "Registration successful";
+        echo "Deposit successfull! Wallet updated";
     } else {
       echo "Not successfully";
-    }
-$newprice = $wallet_balance + $_POST['amount']
-
-    $sqli= "UPDATE wallet SET wallet_balance to $newprice Where user_id="$userid";
-
-    $result = mysqli_query($conn, $sqli);
-
-}
-
-
-
-
-
-
-
+       }  }
+     }
 ?>
 
 <!-- Alert -->

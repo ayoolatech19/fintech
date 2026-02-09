@@ -1,7 +1,36 @@
 <?php 
 $page_title = "Transfer Money";
 include '../includes/header-user.php'; 
+
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "fintech";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+
+if (isset($_POST['send'])) {
+
+    $description=  $_POST['descrip'];
+     $amount= $_POST['amount'];
+     $info= $_POST['recipient_info'];
+
+    //  $userid = $_SESSION['user_id']; 
+
+
+   $sql = "INSERT INTO transfers (transf_type,amount,description)
+            VALUES ('$description','$amount','$info')";
+     
+     
+     if ( mysqli_query($conn, $sql)){
+
+        echo "Deposit successfull! Wallet updated";
+    } else {
+      echo "Not successfully";
+       }  }
 ?>
+
 
 <div class="grid grid-2">
     <!-- Transfer Form -->
@@ -10,24 +39,24 @@ include '../includes/header-user.php';
             <h3 class="card-title">Send Money</h3>
         </div>
         
-        <form id="transferForm" onsubmit="return handleTransfer(event)">
+        <form id="transferForm" method="post" >
             <div class="form-group">
                 <label class="form-label">Recipient</label>
-                <select class="form-control" id="recipientType" onchange="toggleRecipientInput()">
+                <select class="form-control"  id="recipientType" onchange="toggleRecipientInput()">
                     <option value="email">Email Address</option>
-                    <option value="username">Username</option>
+                    <option value="fullname">Fullname</option>
                     <option value="wallet_id">Wallet ID</option>
                 </select>
             </div>
             
             <div class="form-group" id="recipientInputGroup">
-                <label class="form-label" id="recipientLabel">Recipient Email</label>
-                <input type="text" class="form-control" id="recipient" placeholder="Enter recipient email" required>
+                <label class="form-label"  id="recipientLabel">Recipient Email</label>
+                <input type="text" class="form-control" name="recipient_info" id="recipient" placeholder="Enter recipient email" required>
             </div>
             
             <div class="form-group">
                 <label class="form-label">Amount</label>
-                <input type="number" class="form-control" id="amount" placeholder="Enter amount" step="0.01" min="1" required>
+                <input type="number"  name="amount"  class="form-control" id="amount" placeholder="Enter amount" step="0.01" min="1" required>
                 <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 4px;">
                     Available Balance: <strong>$24,580.00</strong>
                 </p>
@@ -35,7 +64,7 @@ include '../includes/header-user.php';
             
             <div class="form-group">
                 <label class="form-label">Description (Optional)</label>
-                <textarea class="form-control" id="description" placeholder="What's this transfer for?"></textarea>
+                <textarea class="form-control" name="descrip" id="description" placeholder="What's this transfer for?"></textarea>
             </div>
             
             <!-- Transfer Summary -->
@@ -55,7 +84,7 @@ include '../includes/header-user.php';
                 </div>
             </div>
             
-            <button type="submit" class="btn btn-primary w-full">
+            <button type="submit"name="send" class="btn btn-primary w-full">
                 <i class="fas fa-paper-plane"></i> Send Money
             </button>
         </form>
@@ -151,7 +180,6 @@ include '../includes/header-user.php';
         </div>
     </div>
 </div>
-
 <script>
 // Toggle recipient input based on type
 function toggleRecipientInput() {
@@ -166,8 +194,8 @@ function toggleRecipientInput() {
             input.type = 'email';
             break;
         case 'username':
-            label.textContent = 'Recipient Username';
-            input.placeholder = 'Enter username';
+            label.textContent = 'Recipient fullname';
+            input.placeholder = 'Enter fullname';
             input.type = 'text';
             break;
         case 'wallet_id':
@@ -189,45 +217,45 @@ document.getElementById('amount').addEventListener('input', function() {
     document.getElementById('displayTotal').textContent = '$' + total.toFixed(2);
 });
 
-// Quick transfer
-function quickTransfer(email, name) {
-    document.getElementById('recipientType').value = 'email';
-    toggleRecipientInput();
-    document.getElementById('recipient').value = email;
-    showNotification('Recipient selected: ' + name, 'info');
-}
+// // Quick transfer
+// function quickTransfer(email, name) {
+//     document.getElementById('recipientType').value = 'email';
+//     toggleRecipientInput();
+//     document.getElementById('recipient').value = email;
+//     showNotification('Recipient selected: ' + name, 'info');
+// }
 
-// Handle transfer form submission
-function handleTransfer(event) {
-    event.preventDefault();
+// // Handle transfer form submission
+// function handleTransfer(event) {
+//     event.preventDefault();
     
-    if (!validateForm('transferForm')) {
-        showNotification('Please fill in all required fields', 'danger');
-        return false;
-    }
+//     if (!validateForm('transferForm')) {
+//         showNotification('Please fill in all required fields', 'danger');
+//         return false;
+//     }
     
-    const recipient = document.getElementById('recipient').value;
-    const amount = document.getElementById('amount').value;
+//     const recipient = document.getElementById('recipient').value;
+//     const amount = document.getElementById('amount').value;
     
-    // Check balance (mock)
-    if (parseFloat(amount) > 24580) {
-        showNotification('Insufficient balance', 'danger');
-        return false;
-    }
+//     // Check balance (mock)
+//     if (parseFloat(amount) > 24580) {
+//         showNotification('Insufficient balance', 'danger');
+//         return false;
+//     }
     
-    // Simulate transfer processing
-    showNotification('Processing transfer...', 'info');
+//     // Simulate transfer processing
+//     showNotification('Processing transfer...', 'info');
     
-    setTimeout(function() {
-        showNotification('Transfer successful! $' + amount + ' sent to ' + recipient, 'success');
-        // Redirect to transactions page
-        setTimeout(function() {
-            window.location.href = 'transactions.php';
-        }, 2000);
-    }, 2000);
+//     setTimeout(function() {
+//         showNotification('Transfer successful! $' + amount + ' sent to ' + recipient, 'success');
+//         // Redirect to transactions page
+//         setTimeout(function() {
+//             window.location.href = 'transactions.php';
+//         }, 2000);
+//     }, 2000);
     
-    return false;
-}
-</script>
+//     return false;
+// }
+</script> 
 
 <?php include '../includes/footer.php'; ?>
