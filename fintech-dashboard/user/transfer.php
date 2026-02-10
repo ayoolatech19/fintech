@@ -16,19 +16,36 @@ if (isset($_POST['send'])) {
      $amount= $_POST['amount'];
      $info= $_POST['recipient_info'];
 
-    //  $userid = $_SESSION['user_id']; 
+
+   $userid= $_SESSION['user_id'];   
 
 
-   $sql = "INSERT INTO transfers (transf_type,amount,description)
+      $sql = "SELECT * FROM wallet
+            WHERE wallet_id = '$userid' 
+            ";
+
+    $result = mysqli_query($conn, $sql);
+
+    if (mysqli_num_rows($result) == 1) {
+
+     $row = mysqli_fetch_assoc($result);
+    
+     $walletid = $row['wallet_id'];
+
+$sqli = "INSERT INTO transfers (transf_type,amount,description)
             VALUES ('$description','$amount','$info')";
      
      
-     if ( mysqli_query($conn, $sql)){
+     if ( mysqli_query($conn, $sqli)){
 
         echo "Deposit successfull! Wallet updated";
     } else {
       echo "Not successfully";
        }  }
+    //  $userid = $_SESSION['user_id']; 
+
+}
+   
 ?>
 
 
