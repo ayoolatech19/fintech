@@ -12,40 +12,65 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 
 if (isset($_POST['send'])) {
 
-    $description=  $_POST['descrip'];
-     $amount= $_POST['amount'];
-     $info= $_POST['recipient_info'];
+    $description = $_POST['descrip'];
+    $amount      = $_POST['amount'];
+    $info        = $_POST['recipient_info'];
 
+    $sender_id = $_SESSION['user_id'];
 
-   $userid= $_SESSION['user_id'];   
+    // ✅ 1. Verify recipient (fullname/email/wallet_id)
+    $sql = "
+    SELECT signup.id AS user_id,
+           wallet.wallet_id,
+           wallet.wallet_balance
+    FROM signup
+    JOIN wallet ON signup.id = wallet.user_id
+    WHERE signup.email = ?
+       OR signup.fullname = ?
+       OR wallet.wallet_id = ?
+    ";
 
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "sss", $info, $info, $info);
+    mysqli_stmt_execute($stmt);
 
-      $sql = "SELECT * FROM wallet
-            WHERE wallet_id = '$userid' 
-            ";
-
-    $result = mysqli_query($conn, $sql);
+    $result = mysqli_stmt_get_result($stmt);
 
     if (mysqli_num_rows($result) == 1) {
 
-     $row = mysqli_fetch_assoc($result);
-    
-     $walletid = $row['wallet_id'];
+        $recipient = mysqli_fetch_assoc($result);
 
-$sqli = "INSERT INTO transfers (transf_type,amount,description)
-            VALUES ('$description','$amount','$info')";
-     
-     
-     if ( mysqli_query($conn, $sqli)){
+        $recipient_id        = $recipient['user_id'];
+        $recipient_wallet_id = $recipient['wallet_id'];
 
-        echo "Deposit successfull! Wallet updated";
+        echo "Recipient verified successfully!<br>";
+
+        // ✅ 2. Insert transfer record properly
+        $insert = "
+        INSERT INTO transfers (sender_id, recipient_id, amount, description)
+        VALUES (?, ?, ?, ?)
+        ";
+
+        $stmt2 = mysqli_prepare($conn, $insert);
+        mysqli_stmt_bind_param(
+            $stmt2,
+            "iids",
+            $sender_id,
+            $recipient_id,
+            $amount,
+            $description
+        );
+
+        if (mysqli_stmt_execute($stmt2)) {
+            echo "Transfer saved successfully!";
+        } else {
+            echo "Transfer failed!";
+        }
+
     } else {
-      echo "Not successfully";
-       }  }
-    //  $userid = $_SESSION['user_id']; 
-
+        die("Recipient not found. Check fullname, email or wallet ID.");
+    }
 }
-   
 ?>
 
 
