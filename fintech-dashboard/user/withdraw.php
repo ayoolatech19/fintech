@@ -1,6 +1,35 @@
 <?php 
 $page_title = "Withdraw Funds";
-include '../includes/header-user.php'; 
+include '../includes/header-user.php';
+
+if (isset($_POST['send'])) {
+
+$withdrawmeth =$_POST['withdrawmeth'];
+$amount =$_POST['amount'];
+$bankname =$_POST['bank_name'];
+$bankacc =$_POST['bank_acc'];
+$accname =$_POST['acc_name'];
+$paypalname =$_POST['paypal_name'];
+$currencytype =$_POST['currencytype'];
+$walletaddy =$_POST['wallet_addy'];
+$reasons =$_POST['reasons'];
+
+      $user_id =   $_SESSION['user_id'];
+  $transact_id = rand(1000000000, 9999999999);
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
 ?>
 
 <!-- Alert -->
@@ -16,10 +45,10 @@ include '../includes/header-user.php';
             <h3 class="card-title">Request Withdrawal</h3>
         </div>
         
-        <form id="withdrawForm" onsubmit="return handleWithdraw(event)">
+        <form id="withdrawForm"  method= "POST">
             <div class="form-group">
                 <label class="form-label">Withdrawal Method</label>
-                <select class="form-control" id="withdrawMethod" required>
+                <select class="form-control" name="withdrawmeth" id="withdrawMethod" required>
                     <option value="">Select withdrawal method</option>
                     <option value="bank">Bank Transfer</option>
                     <option value="paypal">PayPal</option>
@@ -29,7 +58,7 @@ include '../includes/header-user.php';
             
             <div class="form-group">
                 <label class="form-label">Amount</label>
-                <input type="number" class="form-control" id="amount" placeholder="Enter amount" step="0.01" min="50" required>
+                <input type="number" name="amount" class="form-control" id="amount" placeholder="Enter amount" step="0.01" min="50" required>
                 <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 4px;">
                     Available: <strong>$24,580.00</strong> | Minimum: <strong>$50.00</strong>
                 </p>
@@ -37,35 +66,35 @@ include '../includes/header-user.php';
             
             <div class="form-group" id="bankDetailsGroup" style="display: none;">
                 <label class="form-label">Bank Account Number</label>
-                <input type="text" class="form-control" id="bankAccount" placeholder="Enter your bank account number">
+                <input type="text"name="bank_acc" class="form-control" id="bankAccount" placeholder="Enter your bank account number">
                 
                 <label class="form-label mt-2">Bank Name</label>
-                <input type="text" class="form-control" id="bankName" placeholder="Enter your bank name">
+                <input type="text" name="bank_name" class="form-control" id="bankName" placeholder="Enter your bank name">
                 
                 <label class="form-label mt-2">Account Name</label>
-                <input type="text" class="form-control" id="accountName" placeholder="Enter account holder name">
+                <input type="text" name="acc_name" class="form-control" id="accountName" placeholder="Enter account holder name">
             </div>
             
             <div class="form-group" id="paypalGroup" style="display: none;">
                 <label class="form-label">PayPal Email</label>
-                <input type="email" class="form-control" id="paypalEmail" placeholder="Enter your PayPal email">
+                <input type="email"name="paypal_name" class="form-control" id="paypalEmail" placeholder="Enter your PayPal email">
             </div>
             
             <div class="form-group" id="cryptoGroup" style="display: none;">
                 <label class="form-label">Cryptocurrency</label>
-                <select class="form-control" id="cryptoType">
+                <select class="form-control" name="currencytype" id="cryptoType">
                     <option value="btc">Bitcoin (BTC)</option>
                     <option value="eth">Ethereum (ETH)</option>
                     <option value="usdt">Tether (USDT)</option>
                 </select>
                 
                 <label class="form-label mt-2">Wallet Address</label>
-                <input type="text" class="form-control" id="cryptoWallet" placeholder="Enter your wallet address">
+                <input type="text"name="wallet_addy" class="form-control" id="cryptoWallet" placeholder="Enter your wallet address">
             </div>
             
             <div class="form-group">
                 <label class="form-label">Reason for Withdrawal (Optional)</label>
-                <textarea class="form-control" id="reason" placeholder="Tell us why you're withdrawing"></textarea>
+                <textarea class="form-control" name="reasons" id="reason" placeholder="Tell us why you're withdrawing"></textarea>
             </div>
             
             <!-- Withdrawal Summary -->
@@ -85,7 +114,7 @@ include '../includes/header-user.php';
                 </div>
             </div>
             
-            <button type="submit" class="btn btn-primary w-full">
+            <button type="submit" name="submit" class="btn btn-primary w-full">
                 <i class="fas fa-check-circle"></i> Submit Withdrawal Request
             </button>
         </form>
