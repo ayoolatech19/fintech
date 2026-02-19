@@ -2,7 +2,15 @@
 $page_title = "Withdraw Funds";
 include '../includes/header-user.php';
 
-if (isset($_POST['send'])) {
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "fintech";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+
+if (isset($_POST['submit'])) {
 
 $withdrawmeth =$_POST['withdrawmeth'];
 $amount =$_POST['amount'];
@@ -17,16 +25,65 @@ $reasons =$_POST['reasons'];
       $user_id =   $_SESSION['user_id'];
   $transact_id = rand(1000000000, 9999999999);
 
+  $check= "SELECT wallet_balance from wallet where user_id='$user_id'";
+  $run= mysqli_query($conn,$check);
+
+   if (mysqli_num_rows($run) != 1) {
+        echo "Wallet not found";
+        exit();
+    }
+
+    $row = mysqli_fetch_assoc($run);
+    $wallet_balance = $row['wallet_balance'];
 
 
+    if ($wallet_balance < $amount) {
+        echo "Insufficient funds";
+        exit();
+    }
 
+    $newprice = $wallet_balance - $amount;
 
+    $sql = "INSERT INTO withdraw (
+        user_id, transaction_id, method,
+        bank_acc, bank_name, acc_name,
+        paypal_email, cur_type, wallet_addy,
+        reasons, amount
+    )
+    VALUES (
+        '$user_id','$transact_id','$withdrawmeth',
+        '$bankacc','$bankname','$accname',
+        '$paypalname','$currencytype','$walletaddy',
+        '$reasons','$amount'
+    )";
 
+    if (mysqli_query($conn, $sql)) {
 
+        $update = "UPDATE wallet 
+                   SET wallet_balance='$newprice' 
+                   WHERE user_id='$user_id'";
 
+        if (mysqli_query($conn, $update)) {
+            echo "Withdrawal successful! Wallet updated to ₦$newprice";
+        } else {
+            echo "Wallet update failed";
+        }
 
+    } else {
+        echo "Withdrawal insert failed";
+    }
 }
 
+$withdraw="SELECT * from withdraw where user_id='$user_id'";
+$do= mysqli_query($conn,$withdraw);
+
+ $rows = mysqli_fetch_assoc($do);
+ 
+    $transaction_id = $rows['transaction_id'];
+    $method = $rows['method'];
+    $amount= $rows['amount'];
+    $status= $rows['status'];
+    $withdraw_at = $rows['withdraw_at'];
 
 
 
@@ -205,7 +262,7 @@ $reasons =$_POST['reasons'];
             </thead>
             <tbody>
                 <tr>
-                    <td><strong>#WD-2024-00143</strong></td>
+                    <td><strong><?php echo $transaction_id ?></strong></td>
                     <td>Bank Transfer</td>
                     <td><strong>$1,200.00</strong></td>
                     <td><span class="badge badge-warning">Pending</span></td>

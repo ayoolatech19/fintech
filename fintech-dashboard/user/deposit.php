@@ -22,8 +22,8 @@ if (isset($_POST['proceed'])) {
      $userid = $_SESSION['user_id']; 
 
 
-   $sql = "INSERT INTO deposit (deposit_meth,amount,description)
-            VALUES ('$deposit','$amount','$textarea')";
+   $sql = "INSERT INTO deposit (deposit_meth,user_id,amount,description)
+            VALUES ('$deposit','$userid','$amount','$textarea')";
      
      
      if ( mysqli_query($conn, $sql)){
