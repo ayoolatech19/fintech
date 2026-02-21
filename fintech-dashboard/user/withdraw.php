@@ -73,17 +73,13 @@ $reasons =$_POST['reasons'];
         echo "Withdrawal insert failed";
     }
 }
+    $user_id =   $_SESSION['user_id'];
 
-$withdraw="SELECT * from withdraw where user_id='$user_id'";
+$withdraw=  "SELECT * from withdraw where user_id='$user_id'
+ORDER BY withdraw_at DESC";
 $do= mysqli_query($conn,$withdraw);
 
- $rows = mysqli_fetch_assoc($do);
  
-    $transaction_id = $rows['transaction_id'];
-    $method = $rows['method'];
-    $amount= $rows['amount'];
-    $status= $rows['status'];
-    $withdraw_at = $rows['withdraw_at'];
 
 
 
@@ -261,46 +257,26 @@ $do= mysqli_query($conn,$withdraw);
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><strong><?php echo $transaction_id ?></strong></td>
-                    <td>Bank Transfer</td>
-                    <td><strong>$1,200.00</strong></td>
-                    <td><span class="badge badge-warning">Pending</span></td>
-                    <td>Feb 01, 2026</td>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <td><strong>#WD-2024-00142</strong></td>
-                    <td>PayPal</td>
-                    <td><strong>$850.00</strong></td>
-                    <td><span class="badge badge-success">Completed</span></td>
-                    <td>Jan 28, 2026</td>
-                    <td>Jan 29, 2026</td>
-                </tr>
-                <tr>
-                    <td><strong>#WD-2024-00141</strong></td>
-                    <td>Bank Transfer</td>
-                    <td><strong>$2,500.00</strong></td>
-                    <td><span class="badge badge-success">Completed</span></td>
-                    <td>Jan 20, 2026</td>
-                    <td>Jan 22, 2026</td>
-                </tr>
-                <tr>
-                    <td><strong>#WD-2024-00140</strong></td>
-                    <td>Cryptocurrency</td>
-                    <td><strong>$1,000.00</strong></td>
-                    <td><span class="badge badge-danger">Rejected</span></td>
-                    <td>Jan 15, 2026</td>
-                    <td>Jan 16, 2026</td>
-                </tr>
-                <tr>
-                    <td><strong>#WD-2024-00139</strong></td>
-                    <td>Bank Transfer</td>
-                    <td><strong>$3,200.00</strong></td>
-                    <td><span class="badge badge-success">Completed</span></td>
-                    <td>Jan 10, 2026</td>
-                    <td>Jan 12, 2026</td>
-                </tr>
+                <?php
+                if (mysqli_num_rows($do) > 0) {
+
+
+
+    while ($row = mysqli_fetch_assoc($do)) {
+
+       echo "<tr>
+                    <td>".$row['transaction_id']."</td>
+                    <td>".$row['method']."</td>
+                    <td>".$row['amount']."</td>
+                    <td>".$row['status']."</td>
+                    <td>".$row['withdraw_at']."</td>
+                  </tr>";
+    }
+                } else {
+                    echo "withdrawal history not found";
+                }
+                ?>
+            
             </tbody>
         </table>
     </div>

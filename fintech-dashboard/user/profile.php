@@ -1,6 +1,40 @@
 <?php 
 $page_title = "My Profile";
 include '../includes/header-user.php'; 
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "fintech";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+
+
+if (isset($_POST['update'])) {
+
+$fullname=$_POST['fullname'];
+$email=$_POST['email'];
+$phonenumber=$_POST['phone'];
+
+ $user_id =   $_SESSION['user_id'];
+
+
+$sql=" UPDATE signup set fullname = ?, email =?, phone = ? where user_id = $user_id";
+  $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "sss",
+        $fullname,
+        $email,
+        $phonenumber,
+    
+    );
+
+    if (mysqli_stmt_execute($stmt)) {
+        echo "Profile updated successfully!";
+    } else {
+        echo "Error updating profile.";
+    }
+
+}
 ?>
 
 <div class="grid grid-2">
@@ -20,33 +54,22 @@ include '../includes/header-user.php';
             </button>
         </div>
         
-        <form id="profileForm" onsubmit="return handleProfileUpdate(event)">
+        <form id="profileForm" method="post">
             <div class="form-group">
                 <label class="form-label">Full Name</label>
-                <input type="text" class="form-control" value="John Doe" required>
+                <input type="text" name="fullname" class="form-control" value="John Doe" required>
             </div>
             
             <div class="form-group">
                 <label class="form-label">Email Address</label>
-                <input type="email" class="form-control" value="john.doe@example.com" required>
+                <input type="email" name="email" class="form-control" value="john.doe@example.com" required>
             </div>
             
             <div class="form-group">
                 <label class="form-label">Phone Number</label>
-                <input type="tel" class="form-control" value="+1 234 567 8900" required>
+                <input type="tel" name="phone" class="form-control" value="+1 234 567 8900" required>
             </div>
-            
-            <div class="form-group">
-                <label class="form-label">Date of Birth</label>
-                <input type="date" class="form-control" value="1990-01-15" required>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label">Address</label>
-                <textarea class="form-control" required>123 Main Street, New York, NY 10001, USA</textarea>
-            </div>
-            
-            <button type="submit" class="btn btn-primary w-full">
+            <button type="submit" name="update" class="btn btn-primary w-full">
                 <i class="fas fa-save"></i> Update Profile
             </button>
         </form>
