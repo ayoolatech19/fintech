@@ -35,6 +35,44 @@ $sql=" UPDATE signup set fullname = ?, email =?, phone = ? where id = ?";
     }
 
 }
+
+if (isset($_POST['change'])){
+$curpassword=$_POST['cur_password'];
+$newpassword=$_POST['new_password'];
+$conpassword=$_POST['confirm_password'];
+
+ $id =   $_SESSION['user_id'];
+
+
+
+$check = "SELECT passwords from signup where id= '$id'";
+$run = mysqli_query($conn,$check);
+
+ $row = mysqli_fetch_assoc($run);
+
+    $db_password = $row['passwords'];
+
+     if ($curpassword != $db_password) {
+        echo "Current password is wrong!";
+        exit();
+    }
+
+
+     if ($newpassword !== $conpassword) {
+        echo "New passwords do not match!";
+        exit();
+    }
+
+    $sql = "UPDATE signup set passwords ='$newpassword' where id= '$id'";
+    $update= mysqli_query($conn, $sql);
+
+    if ($update) {
+        echo "password changed successfully!";
+        }
+        else {
+            echo "password changed unsucessful";
+        }
+    }
 ?>
 
 
@@ -129,23 +167,23 @@ $sql=" UPDATE signup set fullname = ?, email =?, phone = ? where id = ?";
             <div class="card-header">
                 <h3 class="card-title">Security</h3>
             </div>
-            <form id="passwordForm" onsubmit="return handlePasswordChange(event)">
+            <form id="passwordForm" method="POST">
                 <div class="form-group">
                     <label class="form-label">Current Password</label>
-                    <input type="password" class="form-control" placeholder="Enter current password" required>
+                    <input type="password" name="cur_password" class="form-control" placeholder="Enter current password" required>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">New Password</label>
-                    <input type="password" class="form-control" placeholder="Enter new password" required>
+                    <input type="password" name="new_password" class="form-control" placeholder="Enter new password" required>
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Confirm New Password</label>
-                    <input type="password" class="form-control" placeholder="Confirm new password" required>
+                    <input type="password" name="confirm_password" class="form-control" placeholder="Confirm new password" required>
                 </div>
                 
-                <button type="submit" class="btn btn-primary w-full">
+                <button type="submit" name="change" class="btn btn-primary w-full">
                     <i class="fas fa-lock"></i> Change Password
                 </button>
             </form>
