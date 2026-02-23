@@ -45,12 +45,15 @@ $conpassword=$_POST['confirm_password'];
 
 
 
-$check = "SELECT passwords from signup where id= '$id'";
+$check = "SELECT * from signup where id= '$id'";
 $run = mysqli_query($conn,$check);
 
  $row = mysqli_fetch_assoc($run);
 
     $db_password = $row['passwords'];
+    $fullnames = $row['fullname'];
+    $emails = $row['email'];
+    $phones = $row['phone'];
 
      if ($curpassword != $db_password) {
         echo "Current password is wrong!";
@@ -73,6 +76,9 @@ $run = mysqli_query($conn,$check);
             echo "password changed unsucessful";
         }
     }
+
+
+
 ?>
 
 
@@ -96,17 +102,17 @@ $run = mysqli_query($conn,$check);
         <form id="profileForm" method="post">
             <div class="form-group">
                 <label class="form-label">Full Name</label>
-                <input type="text" name="fullname" class="form-control" value="John Doe" required>
+                <input type="text" name="fullname" class="form-control" value= "<?php echo $row['fullname'];  ?>" required>
             </div>
             
             <div class="form-group">
                 <label class="form-label">Email Address</label>
-                <input type="email" name="email" class="form-control" value="john.doe@example.com" required>
+                <input type="email" name="email" class="form-control" value= "<?php echo $row['email'];?>"   required>
             </div>
             
             <div class="form-group">
                 <label class="form-label">Phone Number</label>
-                <input type="tel" name="phone" class="form-control" value="+1 234 567 8900" required>
+                <input type="tel" name="phone" class="form-control" value= "<?php echo $row ['phone']; ?> "required>
             </div>
             <button type="submit" name="update" class="btn btn-primary w-full">
                 <i class="fas fa-save"></i> Update Profile
