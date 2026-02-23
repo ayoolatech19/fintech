@@ -151,6 +151,14 @@ session_start();
                     <div class="user-profile">
                     <div class="user-avatar">
     <?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "fintech";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+
+
         $name = $_SESSION['user_name'];
         $words = explode(" ", $name);
 
@@ -163,11 +171,19 @@ session_start();
         }
 
         echo $initials;
+
+        $name = $_SESSION['user_id'];
+
+        $sql="SELECT * from signup where id = '$name'";
+
+         $run= mysqli_query($conn,$sql);
+
+    $row = mysqli_fetch_assoc($run);
     ?>
 </div>
 
                         <div class="user-info">
-                            <h4> <?php echo $_SESSION['user_name']; ?></h4>
+                            <h4> <?php echo $row['fullname']; ?></h4>
                             <p>User</p>
                         </div>
                     </div>

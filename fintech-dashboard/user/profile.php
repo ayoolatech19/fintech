@@ -16,16 +16,16 @@ $fullname=$_POST['fullname'];
 $email=$_POST['email'];
 $phonenumber=$_POST['phone'];
 
- $user_id =   $_SESSION['user_id'];
+ $id =   $_SESSION['user_id'];
 
 
-$sql=" UPDATE signup set fullname = ?, email =?, phone = ? where user_id = $user_id";
+$sql=" UPDATE signup set fullname = ?, email =?, phone = ? where id = ?";
   $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "sss",
+    mysqli_stmt_bind_param($stmt, "sssi",
         $fullname,
         $email,
         $phonenumber,
-    
+        $id
     );
 
     if (mysqli_stmt_execute($stmt)) {
@@ -36,6 +36,7 @@ $sql=" UPDATE signup set fullname = ?, email =?, phone = ? where user_id = $user
 
 }
 ?>
+
 
 <div class="grid grid-2">
     <!-- Profile Information -->
