@@ -12,40 +12,53 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 
 if (isset($_POST['send'])) {
 
-    $description=  $_POST['descrip'];
-     $amount= $_POST['amount'];
-     $info= $_POST['recipient_info'];
+    $description = $_POST['descrip'];
+    $amount = $_POST['amount'];
+    $info = $_POST['recipient_info'];
+    $userid = $_SESSION['user_id'];
 
+    if ($amount <= 0) {
+        echo "Invalid amount!";
+        exit();
+    }
 
-   $userid= $_SESSION['user_id'];   
-
-
-      $sql = "SELECT * FROM wallet
-            WHERE wallet_id = '$userid' 
-            ";
-
+    $sql = "SELECT * FROM wallet WHERE id='$userid'";
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) == 1) {
 
-     $row = mysqli_fetch_assoc($result);
-    
-     $walletid = $row['wallet_id'];
-     
+        $row = mysqli_fetch_assoc($result);
+        $walletbalance = $row['wallet_balance'];
 
-$sqli = "INSERT INTO transfers (transf_type,amount,description)
-            VALUES ('$description','$amount','$info')";
-     
-     
-     if ( mysqli_query($conn, $sqli)){
+        if ($walletbalance < $amount) {
+            echo "Insufficient balance!";
+            exit();
+        }
 
-        echo "Deposit successfull! Wallet updated";
-    } else {
-      echo "Not successfully";
-       }  }
-    //  $userid = $_SESSION['user_id']; 
+        
+        $sqli = "INSERT INTO transfers 
+                (user_id, recipient, amount, description, status)
+                VALUES 
+                ('$userid','$info','$amount','$description','success')";
 
-}   
+        if (mysqli_query($conn, $sqli)) {
+
+        
+            $new_balance = $walletbalance - $amount;
+
+            $updateWallet = "UPDATE wallet 
+                             SET wallet_balance='$new_balance'
+                             WHERE id='$userid'";
+
+            mysqli_query($conn, $updateWallet);
+
+            echo "Transfer successful! Wallet updated.";
+
+        } else {
+            echo "Transfer failed!";
+        }
+    }
+}
 ?>
 
 
@@ -61,7 +74,7 @@ $sqli = "INSERT INTO transfers (transf_type,amount,description)
                 <label class="form-label">Recipient</label>
                 <select class="form-control"  id="recipientType" onchange="toggleRecipientInput()">
                     <option value="email">Email Address</option>
-                    <option value="fullname">Fullname</option>
+                    <!-- <option value="fullname">Fullname</option> -->
                     <option value="wallet_id">Wallet ID</option>
                 </select>
             </div>
