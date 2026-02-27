@@ -29,36 +29,56 @@ if (isset($_POST['send'])) {
 
         $row = mysqli_fetch_assoc($result);
         $walletbalance = $row['wallet_balance'];
+        $wallet_id =$row['wallet_id'];
 
         if ($walletbalance < $amount) {
             echo "Insufficient balance!";
             exit();
         }
+     // Find recipient by email OR wallet_id
+        $recipientQuery = "SELECT * FROM wallet 
+                           WHERE wallet_id='$info'
+                           OR id = (SELECT id FROM signup WHERE email='$info')";
 
-        
+        $recipientResult = mysqli_query($conn, $recipientQuery);
+
+        if (mysqli_num_rows($recipientResult) != 1) {
+            echo "Recipient not found!";
+            exit();
+        }
+        $recipient = mysqli_fetch_assoc($recipientResult);
+        $recipientWalletId = $recipient['wallet_id'];
+        $recipientBalance = $recipient['wallet_balance'];
+
+        if ($recipient['id'] == $userid) {
+            echo "You cannot transfer to yourself!";
+            exit();
+        }
+
+        $newSenderBalance = $walletbalance - $amount;
+        $newRecipientBalance = $recipientBalance + $amount;
+
+        mysqli_query($conn, "UPDATE wallet 
+                             SET wallet_balance='$newSenderBalance'
+                             WHERE id='$userid'");
+
+        mysqli_query($conn, "UPDATE wallet 
+                             SET wallet_balance='$newRecipientBalance'
+                             WHERE id='".$recipient['id']."'");
+
         $sqli = "INSERT INTO transfers 
                 (user_id, recipient, amount, description, status)
                 VALUES 
                 ('$userid','$info','$amount','$description','success')";
 
         if (mysqli_query($conn, $sqli)) {
-
-        
-            $new_balance = $walletbalance - $amount;
-
-            $updateWallet = "UPDATE wallet 
-                             SET wallet_balance='$new_balance'
-                             WHERE id='$userid'";
-
-            mysqli_query($conn, $updateWallet);
-
             echo "Transfer successful! Wallet updated.";
-
         } else {
             echo "Transfer failed!";
         }
     }
 }
+
 ?>
 
 
