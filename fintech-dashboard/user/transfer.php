@@ -35,7 +35,7 @@ if (isset($_POST['send'])) {
             echo "Insufficient balance!";
             exit();
         }
-     // Find recipient by email OR wallet_id
+
         $recipientQuery = "SELECT * FROM wallet 
                            WHERE wallet_id='$info'
                            OR id = (SELECT id FROM signup WHERE email='$info')";
@@ -49,6 +49,7 @@ if (isset($_POST['send'])) {
         $recipient = mysqli_fetch_assoc($recipientResult);
         $recipientWalletId = $recipient['wallet_id'];
         $recipientBalance = $recipient['wallet_balance'];
+        $recipientid = $recipient['id'];
 
         if ($recipient['id'] == $userid) {
             echo "You cannot transfer to yourself!";
@@ -64,12 +65,12 @@ if (isset($_POST['send'])) {
 
         mysqli_query($conn, "UPDATE wallet 
                              SET wallet_balance='$newRecipientBalance'
-                             WHERE id='".$recipient['id']."'");
+                             WHERE id='$recipientid'");
 
         $sqli = "INSERT INTO transfers 
-                (user_id, recipient, amount, description, status)
+                (user_id, recipient_id,recipient,amount, description, status)
                 VALUES 
-                ('$userid','$info','$amount','$description','success')";
+                ('$userid', $recipientid,'$info','$amount','$description','success')";
 
         if (mysqli_query($conn, $sqli)) {
             echo "Transfer successful! Wallet updated.";
