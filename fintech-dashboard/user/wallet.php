@@ -10,16 +10,12 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 $page_title = "My Wallet";
 include '../includes/header-user.php'; 
 $userid = $_SESSION['user_id']; 
-// echo   $userid
 
-
-
-    $sql = "SELECT * FROM wallet 
+$sql = "SELECT * FROM wallet 
             WHERE user_id = '$userid'  
             ";
-
-    $result = mysqli_query($conn, $sql);
-    $user = mysqli_fetch_assoc($result);
+ $result = mysqli_query($conn, $sql);
+ $user = mysqli_fetch_assoc($result);
 
 
 

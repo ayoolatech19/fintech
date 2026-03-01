@@ -59,6 +59,9 @@ if (isset($_POST['send'])) {
         $newSenderBalance = $walletbalance - $amount;
         $newRecipientBalance = $recipientBalance + $amount;
 
+        $transact_id = rand(1000000000, 9999999999);
+
+
         $senderupdate = "UPDATE wallet 
                              SET wallet_balance='$newSenderBalance'
                              WHERE id='$userid'";
@@ -72,9 +75,9 @@ if (isset($_POST['send'])) {
         mysqli_query($conn, $recipientupdate);
 
         $sqli = "INSERT INTO transfers 
-                (user_id, recipient_id,recipient,amount, description, status)
+                (user_id, recipient_id,transact_id,recipient,amount, description, status)
                 VALUES 
-                ('$userid', $recipientid,'$info','$amount','$description','success')";
+                ('$userid','$recipientid','$transact_id','$info','$amount','$description','success')";
 
         if (mysqli_query($conn, $sqli)) {
             echo "Transfer successful! Wallet updated.";

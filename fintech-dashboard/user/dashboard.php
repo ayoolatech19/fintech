@@ -1,6 +1,64 @@
 <?php 
 $page_title = "Dashboard";
 include '../includes/header-user.php'; 
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "fintech";
+$conn = mysqli_connect($servername, $username, $password, $database);
+$userid = $_SESSION['user_id']; 
+
+$sql = "SELECT * FROM wallet 
+            WHERE user_id = '$userid'  
+            ";
+ $result = mysqli_query($conn, $sql);
+ $user = mysqli_fetch_assoc($result);
+
+
+
+ $sqli = "SELECT SUM(amount) AS total 
+        FROM transfers 
+        WHERE recipient_id = '$userid'";
+
+$results = mysqli_query($conn, $sqli);
+$rows = mysqli_fetch_assoc($results);
+
+$totalincomes = $rows['total'];
+
+
+ $sqls = "SELECT *  
+        FROM transfers 
+        WHERE recipient_id = '$userid' || user_id = '$userid'";
+
+$resultss = mysqli_query($conn, $sqls);
+$rowss = mysqli_num_rows($resultss);
+
+
+
+
+ $sqlw = "SELECT SUM(amount) AS totalwithdraw 
+        FROM withdraw 
+        WHERE user_id = '$userid'";
+
+$resultw = mysqli_query($conn, $sqlw);
+$roww = mysqli_fetch_assoc($resultw);
+
+$totalwithdraw = $roww['totalwithdraw'];
+
+
+
+// $sqls = "SELECT * 
+//          FROM transfers 
+//          WHERE recipient_id = '$userid' 
+//          OR user_id = '$userid'";
+
+// $resultss = mysqli_query($conn, $sqls);
+// $rowss = mysqli_num_rows($resultss);
+
+// echo $rowss;
+
+
 ?>
 
 <!-- Stats Cards -->
@@ -16,7 +74,7 @@ include '../includes/header-user.php';
             </span>
         </div>
         <div class="stat-body">
-            <h3>$24,580.00</h3>
+            <h3>$<?php echo $user['wallet_balance']; ?></h3>
             <p>Total Balance</p>
         </div>
     </div>
@@ -32,7 +90,7 @@ include '../includes/header-user.php';
             </span>
         </div>
         <div class="stat-body">
-            <h3>$12,480.00</h3>
+            <h3>$<?php echo $totalincomes ; ?></h3>
             <p>Total Income</p>
         </div>
     </div>
@@ -48,8 +106,8 @@ include '../includes/header-user.php';
             </span>
         </div>
         <div class="stat-body">
-            <h3>$8,240.00</h3>
-            <p>Total Expenses</p>
+            <h3>$<?php echo $totalwithdraw ?></h3>
+            <p>Total withdrawals</p>
         </div>
     </div>
     
@@ -64,7 +122,7 @@ include '../includes/header-user.php';
             </span>
         </div>
         <div class="stat-body">
-            <h3>248</h3>
+            <h3><?php echo $rowss ?></h3>
             <p>Total Transactions</p>
         </div>
     </div>
@@ -132,38 +190,6 @@ include '../includes/header-user.php';
                         <td><span class="badge badge-success">Completed</span></td>
                         <td>Feb 02, 2026</td>
                     </tr>
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="fas fa-money-bill-wave" style="color: var(--warning);"></i>
-                                <span>Withdrawal</span>
-                            </div>
-                        </td>
-                        <td><strong>-$1,200.00</strong></td>
-                        <td><span class="badge badge-warning">Pending</span></td>
-                        <td>Feb 01, 2026</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="fas fa-arrow-down" style="color: var(--success);"></i>
-                                <span>Deposit</span>
-                            </div>
-                        </td>
-                        <td><strong>+$5,000.00</strong></td>
-                        <td><span class="badge badge-success">Completed</span></td>
-                        <td>Jan 30, 2026</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <i class="fas fa-paper-plane" style="color: var(--primary-blue);"></i>
-                                <span>Transfer to Sarah</span>
-                            </div>
-                        </td>
-                        <td><strong>-$320.00</strong></td>
-                        <td><span class="badge badge-success">Completed</span></td>
-                        <td>Jan 28, 2026</td>
                     </tr>
                 </tbody>
             </table>
