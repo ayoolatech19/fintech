@@ -21,6 +21,10 @@ if (isset($_POST['proceed'])) {
 
      $userid = $_SESSION['user_id']; 
 
+$type = "deposit";
+
+
+  $transact_id = rand(1000000000, 9999999999);
 
    $sql = "INSERT INTO deposit (deposit_meth,user_id,amount,description)
             VALUES ('$deposit','$userid','$amount','$textarea')";
@@ -46,6 +50,13 @@ if (isset($_POST['proceed'])) {
     } else {
       echo "Not successfully";
        }  }
+
+
+
+ $depositsql = "INSERT INTO transactionhistory (user_id,transaction_id,type,description,amount,status)
+                       VALUES ('$userid','$transact_id','$type','$textarea','$amount','deposited')";
+  
+  $depositrun= mysqli_query($conn,$depositsql);
      }
 ?>
 

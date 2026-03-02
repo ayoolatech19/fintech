@@ -21,6 +21,7 @@ $paypalname =$_POST['paypal_name'];
 $currencytype =$_POST['currencytype'];
 $walletaddy =$_POST['wallet_addy'];
 $reasons =$_POST['reasons'];
+$type = "withdraw";
 
       $user_id =   $_SESSION['user_id'];
   $transact_id = rand(1000000000, 9999999999);
@@ -72,6 +73,18 @@ $reasons =$_POST['reasons'];
     } else {
         echo "Withdrawal insert failed";
     }
+
+
+ $withdrawsql = "INSERT INTO transactionhistory (user_id,transaction_id,type,description,amount)
+                       VALUES ('$user_id','$transact_id','$type','$reasons','$amount')";
+  
+  $witdrawalrun= mysqli_query($conn,$withdrawsql);
+   
+
+
+
+
+    
 }
     $user_id =   $_SESSION['user_id'];
 

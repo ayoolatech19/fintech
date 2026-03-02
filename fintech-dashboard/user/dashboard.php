@@ -106,7 +106,7 @@ $totalwithdraw = $roww['totalwithdraw'];
             </span>
         </div>
         <div class="stat-body">
-            <h3>$<?php echo $totalwithdraw ?></h3>
+            <h3>$<?php echo $totalwithdraw ?? 0 ?></h3>
             <p>Total withdrawals</p>
         </div>
     </div>

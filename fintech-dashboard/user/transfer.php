@@ -16,6 +16,8 @@ if (isset($_POST['send'])) {
     $amount = $_POST['amount'];
     $info = $_POST['recipient_info'];
     $userid = $_SESSION['user_id'];
+$type = "transfer";
+
 
     if ($amount <= 0) {
         echo "Invalid amount!";
@@ -77,7 +79,7 @@ if (isset($_POST['send'])) {
         $sqli = "INSERT INTO transfers 
                 (user_id, recipient_id,transact_id,recipient,amount, description, status)
                 VALUES 
-                ('$userid','$recipientid','$transact_id','$info','$amount','$description','success')";
+                ('$userid', '$recipientid','$transact_id','$info','$amount','$description','success')";
 
         if (mysqli_query($conn, $sqli)) {
             echo "Transfer successful! Wallet updated.";
@@ -85,7 +87,17 @@ if (isset($_POST['send'])) {
             echo "Transfer failed!";
         }
     }
+
+
+ $transfersql = "INSERT INTO transactionhistory (user_id,transaction_id,type,description,amount,status)
+                       VALUES ('$userid','$transact_id','$type','$description','$amount','completed')";
+  
+  $transferrun= mysqli_query($conn,$transfersql);
+   
+
+
 }
+
 
 ?>
 

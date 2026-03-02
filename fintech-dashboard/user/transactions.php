@@ -1,6 +1,25 @@
 <?php 
 $page_title = "Transaction History";
 include '../includes/header-user.php'; 
+
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "fintech";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+     $userid = $_SESSION['user_id']; 
+
+$sql="SELECT * from transactionhistory where user_id='$userid' ORDER BY date DESC ";
+  $run= mysqli_query($conn,$sql);
+  
+
+
+
+
+
+
 ?>
 
 <!-- Filters -->
@@ -95,136 +114,41 @@ include '../includes/header-user.php';
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><strong>#TXN-2024-00145</strong></td>
-                    <td><span class="badge badge-success"><i class="fas fa-arrow-down"></i> Deposit</span></td>
-                    <td>Bank Transfer Deposit</td>
-                    <td><strong style="color: var(--success);">+$2,500.00</strong></td>
-                    <td><span class="badge badge-success">Completed</span></td>
-                    <td>Feb 03, 2026 14:30</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewTransaction('TXN-2024-00145')">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>#TXN-2024-00144</strong></td>
-                    <td><span class="badge badge-info"><i class="fas fa-paper-plane"></i> Transfer</span></td>
-                    <td>Transfer to Alex Johnson</td>
-                    <td><strong style="color: var(--danger);">-$850.00</strong></td>
-                    <td><span class="badge badge-success">Completed</span></td>
-                    <td>Feb 02, 2026 10:15</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewTransaction('TXN-2024-00144')">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>#TXN-2024-00143</strong></td>
-                    <td><span class="badge badge-warning"><i class="fas fa-money-bill-wave"></i> Withdrawal</span></td>
-                    <td>Withdrawal Request</td>
-                    <td><strong style="color: var(--danger);">-$1,200.00</strong></td>
-                    <td><span class="badge badge-warning">Pending</span></td>
-                    <td>Feb 01, 2026 16:45</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewTransaction('TXN-2024-00143')">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>#TXN-2024-00142</strong></td>
-                    <td><span class="badge badge-success"><i class="fas fa-arrow-down"></i> Deposit</span></td>
-                    <td>Card Payment Deposit</td>
-                    <td><strong style="color: var(--success);">+$5,000.00</strong></td>
-                    <td><span class="badge badge-success">Completed</span></td>
-                    <td>Jan 30, 2026 09:20</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewTransaction('TXN-2024-00142')">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>#TXN-2024-00141</strong></td>
-                    <td><span class="badge badge-info"><i class="fas fa-paper-plane"></i> Transfer</span></td>
-                    <td>Transfer to Sarah Williams</td>
-                    <td><strong style="color: var(--danger);">-$320.00</strong></td>
-                    <td><span class="badge badge-success">Completed</span></td>
-                    <td>Jan 28, 2026 13:55</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewTransaction('TXN-2024-00141')">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>#TXN-2024-00140</strong></td>
-                    <td><span class="badge badge-warning"><i class="fas fa-money-bill-wave"></i> Withdrawal</span></td>
-                    <td>PayPal Withdrawal</td>
-                    <td><strong style="color: var(--danger);">-$850.00</strong></td>
-                    <td><span class="badge badge-success">Completed</span></td>
-                    <td>Jan 25, 2026 11:30</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewTransaction('TXN-2024-00140')">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>#TXN-2024-00139</strong></td>
-                    <td><span class="badge badge-success"><i class="fas fa-arrow-down"></i> Deposit</span></td>
-                    <td>Paystack Deposit</td>
-                    <td><strong style="color: var(--success);">+$1,800.00</strong></td>
-                    <td><span class="badge badge-success">Completed</span></td>
-                    <td>Jan 22, 2026 15:10</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewTransaction('TXN-2024-00139')">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>#TXN-2024-00138</strong></td>
-                    <td><span class="badge badge-info"><i class="fas fa-paper-plane"></i> Transfer</span></td>
-                    <td>Transfer to Mike Chen</td>
-                    <td><strong style="color: var(--danger);">-$500.00</strong></td>
-                    <td><span class="badge badge-success">Completed</span></td>
-                    <td>Jan 20, 2026 08:45</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewTransaction('TXN-2024-00138')">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>#TXN-2024-00137</strong></td>
-                    <td><span class="badge badge-warning"><i class="fas fa-money-bill-wave"></i> Withdrawal</span></td>
-                    <td>Bank Transfer Withdrawal</td>
-                    <td><strong style="color: var(--danger);">-$3,200.00</strong></td>
-                    <td><span class="badge badge-success">Completed</span></td>
-                    <td>Jan 18, 2026 12:20</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewTransaction('TXN-2024-00137')">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><strong>#TXN-2024-00136</strong></td>
-                    <td><span class="badge badge-success"><i class="fas fa-arrow-down"></i> Deposit</span></td>
-                    <td>Bank Transfer Deposit</td>
-                    <td><strong style="color: var(--success);">+$4,200.00</strong></td>
-                    <td><span class="badge badge-danger">Failed</span></td>
-                    <td>Jan 15, 2026 14:00</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewTransaction('TXN-2024-00136')">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </td>
-                </tr>
+              <?php  
+
+if (mysqli_num_rows($run) > 0) {
+
+    while ($row = mysqli_fetch_assoc($run)) {
+
+        echo "<tr>
+                <td>".$row['transaction_id']."</td>
+                <td>
+                    <span class='badge badge-success'>
+                        <i class='fas fa-arrow-down'></i> ".$row['type']."
+                    </span>
+                </td>
+                <td>".$row['description']."</td>
+                <td>
+                    <strong style='color: var(--success);'>
+                        ".$row['amount']."
+                    </strong>
+                </td>
+                <td>
+                    <span class='badge badge-success'>
+                        ".$row['status']."
+                    </span>
+                </td>
+                <td>".$row['date']."</td>
+                <td>
+                    <button class='btn btn-sm btn-secondary' 
+                        onclick=\"viewTransaction('".$row['transaction_id']."')\">
+                        <i class='fas fa-eye'></i>
+                    </button>
+                </td>
+              </tr>";
+    }
+}
+?>
             </tbody>
         </table>
     </div>
