@@ -16,6 +16,7 @@ if (isset($_POST['send'])) {
     $amount = $_POST['amount'];
     $info = $_POST['recipient_info'];
     $userid = $_SESSION['user_id'];
+    $pin = $_POST['pin'];
 $type = "transfer";
 
 
@@ -37,6 +38,18 @@ $type = "transfer";
             echo "Insufficient balance!";
             exit();
         }
+
+        $pincon = "SELECT pin from signup where id = '$userid'";
+    $pinresult = mysqli_query($conn, $pincon);
+    $pinfetch =mysqli_fetch_assoc($pinresult);
+        $currentpin = $pinfetch['pin'];
+
+       if ($pin != $currentpin ) {
+        echo " incorrect pin ";
+       exit();
+       }
+
+
 
         $recipientQuery = "SELECT * FROM wallet 
                            WHERE wallet_id='$info'
@@ -135,6 +148,10 @@ $type = "transfer";
             <div class="form-group">
                 <label class="form-label">Description (Optional)</label>
                 <textarea class="form-control" name="descrip" id="description" placeholder="What's this transfer for?"></textarea>
+            </div>
+              <div class="form-group">
+                <label class="form-label">Input pin</label>
+                <textarea class="form-control" name="pin" id="description" placeholder="Current pin"></textarea>
             </div>
             
             <!-- Transfer Summary -->

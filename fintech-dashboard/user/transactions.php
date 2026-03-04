@@ -11,7 +11,7 @@ $database = "fintech";
 $conn = mysqli_connect($servername, $username, $password, $database);
      $userid = $_SESSION['user_id']; 
 
-$sql="SELECT * from transactionhistory where user_id='$userid' ORDER BY date DESC ";
+$sql="SELECT * from transactionhistory where user_id='$userid' ORDER BY date ASC ";
   $run= mysqli_query($conn,$sql);
   
 
@@ -120,27 +120,50 @@ if (mysqli_num_rows($run) > 0) {
 
     while ($row = mysqli_fetch_assoc($run)) {
 
+        // TYPE COLOR
+        if ($row['type'] == 'deposit') {
+            $typeClass = 'badge-success';
+            $icon = 'fa-arrow-down';
+        } 
+        elseif ($row['type'] == 'withdrawal') {
+            $typeClass = 'badge-danger';
+            $icon = 'fa-arrow-up';
+        } 
+        else { // transfer
+            $typeClass = 'badge-primary';
+            $icon = 'fa-exchange-alt';
+        }
+
+        // STATUS COLOR
+        if ($row['status'] == 'completed') {
+            $statusClass = 'badge-success';
+        } 
+        elseif ($row['status'] == 'pending') {
+            $statusClass = 'badge-warning';
+        } 
+        else { // failed
+            $statusClass = 'badge-danger';
+        }
+
         echo "<tr>
                 <td>".$row['transaction_id']."</td>
                 <td>
-                    <span class='badge badge-success'>
-                        <i class='fas fa-arrow-down'></i> ".$row['type']."
+                    <span class='badge $typeClass'>
+                        <i class='fas $icon'></i> ".$row['type']."
                     </span>
                 </td>
                 <td>".$row['description']."</td>
                 <td>
-                    <strong style='color: var(--success);'>
-                        ".$row['amount']."
-                    </strong>
+                    <strong>₦".$row['amount']."</strong>
                 </td>
                 <td>
-                    <span class='badge badge-success'>
+                    <span class='badge $statusClass'>
                         ".$row['status']."
                     </span>
                 </td>
                 <td>".$row['date']."</td>
                 <td>
-                    <button class='btn btn-sm btn-secondary' 
+                    <button class='btn btn-sm btn-secondary'
                         onclick=\"viewTransaction('".$row['transaction_id']."')\">
                         <i class='fas fa-eye'></i>
                     </button>
@@ -148,6 +171,7 @@ if (mysqli_num_rows($run) > 0) {
               </tr>";
     }
 }
+
 ?>
             </tbody>
         </table>

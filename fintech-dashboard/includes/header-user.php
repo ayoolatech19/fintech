@@ -107,6 +107,12 @@ session_start();
                                 <span>Settings</span>
                             </a>
                         </li>
+                           <li class="nav-item">
+                            <a href="setpin.php" class="nav-link">
+                                <i class="nav-icon fas fa-user"></i>
+                                <span>Setpin</span>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="../logout.php" class="nav-link">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>

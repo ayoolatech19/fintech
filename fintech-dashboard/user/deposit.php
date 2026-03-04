@@ -20,11 +20,25 @@ if (isset($_POST['proceed'])) {
      $textarea= $_POST['textarea'];
 
      $userid = $_SESSION['user_id']; 
+    $pin = $_POST['pin'];
 
 $type = "deposit";
 
 
   $transact_id = rand(1000000000, 9999999999);
+
+ $pincon = "SELECT pin from signup where id = '$userid'";
+    $pinresult = mysqli_query($conn, $pincon);
+    $pinfetch =mysqli_fetch_assoc($pinresult);
+        $currentpin = $pinfetch['pin'];
+
+       if ($pin != $currentpin ) {
+        echo " incorrect pin ";
+       exit();
+       }
+
+
+
 
    $sql = "INSERT INTO deposit (deposit_meth,user_id,amount,description)
             VALUES ('$deposit','$userid','$amount','$textarea')";
@@ -95,6 +109,11 @@ $type = "deposit";
                 <label class="form-label">Description (Optional)</label>
                 <textarea class="form-control" name="textarea" id="description" placeholder="Add a note about this deposit"></textarea>
             </div>
+              <div class="form-group">
+                <label class="form-label">Input pin</label>
+                <textarea class="form-control" name="pin" id="description" placeholder="Current pin"></textarea>
+            </div>
+            
             
             <!-- Fee Information -->
             <div style="background-color: var(--bg-secondary); padding: 16px; border-radius: 8px; margin-bottom: 20px;">

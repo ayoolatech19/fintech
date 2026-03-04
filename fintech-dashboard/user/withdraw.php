@@ -21,6 +21,8 @@ $paypalname =$_POST['paypal_name'];
 $currencytype =$_POST['currencytype'];
 $walletaddy =$_POST['wallet_addy'];
 $reasons =$_POST['reasons'];
+    $pin = $_POST['pin'];
+
 $type = "withdraw";
 
       $user_id =   $_SESSION['user_id'];
@@ -58,6 +60,18 @@ $type = "withdraw";
         '$reasons','$amount'
     )";
 
+    
+     $pincon = "SELECT pin from signup where id = '$user_id'";
+    $pinresult = mysqli_query($conn, $pincon);
+    $pinfetch =mysqli_fetch_assoc($pinresult);
+        $currentpin = $pinfetch['pin'];
+
+       if ($pin != $currentpin ) {
+        echo " incorrect pin ";
+       exit();
+       }
+
+
     if (mysqli_query($conn, $sql)) {
 
         $update = "UPDATE wallet 
@@ -75,8 +89,8 @@ $type = "withdraw";
     }
 
 
- $withdrawsql = "INSERT INTO transactionhistory (user_id,transaction_id,type,description,amount)
-                       VALUES ('$user_id','$transact_id','$type','$reasons','$amount')";
+ $withdrawsql = "INSERT INTO transactionhistory (user_id,transaction_id,type,description,amount,status)
+                       VALUES ('$user_id','$transact_id','$type','$reasons','$amount','withdrawal completed')";
   
   $witdrawalrun= mysqli_query($conn,$withdrawsql);
    
@@ -162,6 +176,11 @@ $do= mysqli_query($conn,$withdraw);
                 <label class="form-label">Reason for Withdrawal (Optional)</label>
                 <textarea class="form-control" name="reasons" id="reason" placeholder="Tell us why you're withdrawing"></textarea>
             </div>
+             <div class="form-group">
+                <label class="form-label">Input pin</label>
+                <textarea class="form-control" name="pin" id="description" placeholder="Current pin"></textarea>
+            </div>
+            
             
             <!-- Withdrawal Summary -->
             <div style="background-color: var(--bg-secondary); padding: 16px; border-radius: 8px; margin-bottom: 20px;">
