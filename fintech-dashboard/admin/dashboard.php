@@ -1,6 +1,77 @@
 <?php 
 $page_title = "Admin Dashboard";
 include '../includes/header-admin.php'; 
+
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "fintech";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+
+
+$sql = "SELECT COUNT(id) AS total_users 
+        FROM signup 
+        WHERE role = 'user'";
+
+$result = mysqli_query($conn, $sql);
+$rows = mysqli_fetch_assoc($result);
+
+
+
+
+$sqlw = "SELECT SUM(wallet_balance) AS totalplatformbalance 
+        FROM wallet ";
+
+$resultw = mysqli_query($conn, $sqlw);
+$roww = mysqli_fetch_assoc($resultw);
+
+$totalplatform = $roww['totalplatformbalance'];
+
+
+
+
+
+$sqlc = "SELECT COUNT(*) AS total_today 
+        FROM transactionhistory
+        WHERE date >= NOW() - INTERVAL 1 DAY";
+
+$result = mysqli_query($conn, $sqlc);
+$row = mysqli_fetch_assoc($result);
+
+
+
+
+$sqlp = "SELECT COUNT(*) AS total_pending
+      FROM withdraw
+      WHERE status = 'pending'";
+
+
+$resultp = mysqli_query($conn, $sqlp);
+$rowp = mysqli_fetch_assoc($resultp);
+
+$totalpending = $rowp   ['total_pending'];
+
+
+
+
+
+
+
+
+// $sqlc = "SELECT COUNT(*) AS total_today 
+//         FROM transactionhistory
+//         WHERE date >= NOW() - INTERVAL 1 DAY";
+
+// $result = mysqli_query($conn, $sqlc);
+// $row = mysqli_fetch_assoc($result);
+
+
+
+
+
+
 ?>
 
 <!-- Stats Cards -->
@@ -16,7 +87,7 @@ include '../includes/header-admin.php';
             </span>
         </div>
         <div class="stat-body">
-            <h3>1,248</h3>
+            <h3><?php echo $rows['total_users']; ?></h3>
             <p>Total Users</p>
         </div>
     </div>
@@ -32,7 +103,7 @@ include '../includes/header-admin.php';
             </span>
         </div>
         <div class="stat-body">
-            <h3>$2.4M</h3>
+            <h3><?php echo "$totalplatform";?></h3>
             <p>Total Platform Balance</p>
         </div>
     </div>
@@ -48,7 +119,7 @@ include '../includes/header-admin.php';
             </span>
         </div>
         <div class="stat-body">
-            <h3>342</h3>
+            <h3><?php echo $row['total_today'];?></h3>
             <p>Transactions Today</p>
         </div>
     </div>
@@ -64,7 +135,7 @@ include '../includes/header-admin.php';
             </span>
         </div>
         <div class="stat-body">
-            <h3>5</h3>
+            <h3><?php echo "$totalpending";?></h3>
             <p>Pending Withdrawals</p>
         </div>
     </div>

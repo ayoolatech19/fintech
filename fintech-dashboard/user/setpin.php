@@ -17,7 +17,6 @@ if (isset($_POST['update'])) {
     $confirm = $_POST['confirmpin'];
       $user_id =   $_SESSION['user_id'];
 
- 
 
  $pincon = "SELECT pin from signup where id = '$user_id'";
     $pinresult = mysqli_query($conn, $pincon);
@@ -44,8 +43,6 @@ if (isset($_POST['update'])) {
       echo "Pin update not  successful";
        }  
 }
-
-
 ?>
 
 
