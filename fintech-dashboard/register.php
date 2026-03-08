@@ -161,6 +161,12 @@ $conn = mysqli_connect($servername, $username, $password, $database);
                     <input type="password" class="form-control" placeholder="Confirm your password" required>
                 </div>
                 
+              <div class="form-group">
+                <label class="form-label">Create pin</label>
+                <textarea class="form-control" name="pin" id="description" placeholder="Current pin"></textarea>
+            </div>
+            
+                
                 <div style="margin-bottom: 24px;">
                     <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
                         <input type="checkbox" style="cursor: pointer; margin-top: 4px;" required>
@@ -228,10 +234,11 @@ if (isset($_POST['create'])) {
     $email    = $_POST['email'];
     $phone    = $_POST['phonenumber'];
     $password = $_POST['password'];
+    $pin = $_POST['pin'];
 
     // 1. Insert user
-    $sql = "INSERT INTO signup (fullname,email,phone,passwords)
-            VALUES ('$fullname','$email','$phone','$password')";
+    $sql = "INSERT INTO signup (fullname,email,phone,passwords,pin)
+            VALUES ('$fullname','$email','$phone','$password','$pin')";
 
     if (mysqli_query($conn, $sql)) {
 

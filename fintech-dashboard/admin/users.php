@@ -1,6 +1,27 @@
 <?php 
 $page_title = "Manage Users";
 include '../includes/header-admin.php'; 
+
+
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "fintech";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+    //  $userid = $_SESSION['user_id']; 
+
+
+
+
+$sql = "SELECT * 
+        FROM signup 
+        WHERE role = 'user'";
+
+$result = mysqli_query($conn, $sql);
+// $rows = mysqli_fetch_assoc($result);
+
 ?>
 
 <!-- Stats -->
@@ -88,192 +109,67 @@ include '../includes/header-admin.php';
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        <div style="display: flex; gap: 12px; align-items: center;">
-                            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px;">
-                                JD
-                            </div>
-                            <div>
-                                <strong style="font-size: 14px;">John Doe</strong>
-                                <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 2px;">USER-001</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>john.doe@example.com</td>
-                    <td>+1 234 567 8900</td>
-                    <td><strong>$24,580.00</strong></td>
-                    <td><span class="badge badge-success">Active</span></td>
-                    <td>Jan 15, 2024</td>
-                    <td>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-sm btn-secondary" title="View">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-secondary" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-warning" title="Suspend">
-                                <i class="fas fa-ban"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div style="display: flex; gap: 12px; align-items: center;">
-                            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #f093fb, #f5576c); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px;">
-                                SW
-                            </div>
-                            <div>
-                                <strong style="font-size: 14px;">Sarah Williams</strong>
-                                <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 2px;">USER-002</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>sarah.w@example.com</td>
-                    <td>+1 234 567 8901</td>
-                    <td><strong>$18,240.00</strong></td>
-                    <td><span class="badge badge-success">Active</span></td>
-                    <td>Jan 18, 2024</td>
-                    <td>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-sm btn-secondary" title="View">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-secondary" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-warning" title="Suspend">
-                                <i class="fas fa-ban"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div style="display: flex; gap: 12px; align-items: center;">
-                            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #4facfe, #00f2fe); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px;">
-                                MC
-                            </div>
-                            <div>
-                                <strong style="font-size: 14px;">Mike Chen</strong>
-                                <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 2px;">USER-003</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>mike.chen@example.com</td>
-                    <td>+1 234 567 8902</td>
-                    <td><strong>$32,150.00</strong></td>
-                    <td><span class="badge badge-warning">Suspended</span></td>
-                    <td>Jan 22, 2024</td>
-                    <td>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-sm btn-secondary" title="View">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-secondary" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-success" title="Activate">
-                                <i class="fas fa-check"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div style="display: flex; gap: 12px; align-items: center;">
-                            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #fa709a, #fee140); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px;">
-                                AJ
-                            </div>
-                            <div>
-                                <strong style="font-size: 14px;">Alex Johnson</strong>
-                                <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 2px;">USER-004</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>alex.j@example.com</td>
-                    <td>+1 234 567 8903</td>
-                    <td><strong>$45,890.00</strong></td>
-                    <td><span class="badge badge-success">Active</span></td>
-                    <td>Jan 25, 2024</td>
-                    <td>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-sm btn-secondary" title="View">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-secondary" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-warning" title="Suspend">
-                                <i class="fas fa-ban"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div style="display: flex; gap: 12px; align-items: center;">
-                            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #30cfd0, #330867); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px;">
-                                ED
-                            </div>
-                            <div>
-                                <strong style="font-size: 14px;">Emily Davis</strong>
-                                <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 2px;">USER-005</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>emily.d@example.com</td>
-                    <td>+1 234 567 8904</td>
-                    <td><strong>$12,340.00</strong></td>
-                    <td><span class="badge badge-success">Active</span></td>
-                    <td>Jan 28, 2024</td>
-                    <td>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-sm btn-secondary" title="View">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-secondary" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-warning" title="Suspend">
-                                <i class="fas fa-ban"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div style="display: flex; gap: 12px; align-items: center;">
-                            <div style="width: 36px; height: 36px; background: linear-gradient(135deg, #a8edea, #fed6e3); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-weight: 600; font-size: 14px;">
-                                RB
-                            </div>
-                            <div>
-                                <strong style="font-size: 14px;">Robert Brown</strong>
-                                <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 2px;">USER-006</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>robert.b@example.com</td>
-                    <td>+1 234 567 8905</td>
-                    <td><strong>$28,750.00</strong></td>
-                    <td><span class="badge badge-success">Active</span></td>
-                    <td>Feb 01, 2024</td>
-                    <td>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-sm btn-secondary" title="View">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="btn btn-sm btn-secondary" title="Edit">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-warning" title="Suspend">
-                                <i class="fas fa-ban"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                <?php 
+
+if (mysqli_num_rows($result) > 0) {
+   while ($row = mysqli_fetch_assoc($result)) {
+
+      $fullname = $row['fullname'];
+      $userid = $row['id'];
+      $email = $row['email'];
+      $phone = $row['phone'];
+
+     $walletsql = "SELECT * FROM wallet WHERE user_id='$userid'";
+      $walletrun = mysqli_query($conn,$walletsql);
+      $walletrow = mysqli_fetch_assoc($walletrun);
+
+      $balance = $walletrow['wallet_balance'];
+      $creation = $walletrow['created_at'];
+
+
+      echo "
+
+<tr>
+<td>
+<div style='display: flex; gap: 12px; align-items: center;'>
+<div style='width: 36px; height: 36px; background: linear-gradient(135deg, #a8edea, #fed6e3); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-weight: 600; font-size: 14px;'>
+RB
+</div>
+<div>
+<strong style='font-size: 14px;'>$fullname</strong>
+<p style='font-size: 12px; color: var(--text-tertiary); margin-top: 2px;'>USER-006</p>
+</div>
+</div>
+</td>
+
+<td>$email</td>
+<td>$phone</td>
+<td><strong> $balance </strong></td>
+<td><span class='badge badge-success'>Active</span></td>
+<td>$creation</td>
+
+<td>
+<div style='display: flex; gap: 8px;'>
+<button class='btn btn-sm btn-secondary'>
+<i class='fas fa-eye'></i>
+</button>
+
+<button class='btn btn-sm btn-secondary'>
+<i class='fas fa-edit'></i>
+</button>
+
+<button class='btn btn-sm btn-warning'>
+<i class='fas fa-ban'></i>
+</button>
+</div>
+</td>
+
+</tr>
+
+      ";
+   }
+}
+?>
             </tbody>
         </table>
     </div>
