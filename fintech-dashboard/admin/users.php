@@ -14,6 +14,15 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 
 
 
+    
+$sqli = "SELECT COUNT(id) AS total_users 
+        FROM signup 
+        WHERE role = 'user'";
+
+$results = mysqli_query($conn, $sqli);
+$rows = mysqli_fetch_assoc($results);
+
+
 
 $sql = "SELECT * 
         FROM signup 
@@ -27,8 +36,8 @@ $result = mysqli_query($conn, $sql);
 <!-- Stats -->
 <div class="grid grid-4 mb-4">
     <div class="card">
-        <h4 style="font-size: 13px; color: var(--text-tertiary); margin-bottom: 8px;">Total Users</h4>
-        <h3 style="font-size: 24px; font-weight: 700;">1,248</h3>
+        <h4 style="font-size: 13px; color: var(--text-tertiary); margin-bottom: 8px;">Total users</h4>
+        <h3 style="font-size: 24px; font-weight: 700;"><?php echo $rows ['total_users']; ?></h3>
     </div>
     
     <div class="card">
