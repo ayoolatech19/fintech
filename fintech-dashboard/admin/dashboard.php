@@ -35,7 +35,7 @@ $totalplatform = $roww['totalplatformbalance'];
 
 $sqlc = "SELECT COUNT(*) AS total_today 
         FROM transactionhistory
-        WHERE date >= NOW() - INTERVAL 1 DAY";
+        WHERE transact_date >= NOW() - INTERVAL 1 DAY";
 
 $result = mysqli_query($conn, $sqlc);
 $row = mysqli_fetch_assoc($result);

@@ -11,7 +11,7 @@ $database = "fintech";
 $conn = mysqli_connect($servername, $username, $password, $database);
      $userid = $_SESSION['user_id']; 
 
-$sql="SELECT * from transactionhistory where user_id='$userid' ORDER BY date ASC ";
+$sql="SELECT * from transactionhistory where user_id='$userid' ORDER BY transact_date ASC ";
   $run= mysqli_query($conn,$sql);
   
 
