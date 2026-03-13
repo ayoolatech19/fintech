@@ -161,7 +161,7 @@ if (mysqli_num_rows($run) > 0) {
                         ".$row['status']."
                     </span>
                 </td>
-                <td>".$row['date']."</td>
+                <td>".$row['transact_date']."</td>
                 <td>
                     <button class='btn btn-sm btn-secondary'
                         onclick=\"viewTransaction('".$row['transaction_id']."')\">

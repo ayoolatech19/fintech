@@ -1,5 +1,28 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
+<?php 
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "fintech";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+
+$sql ="SELECT fullname from  signup where role='admin'";
+  $run= mysqli_query($conn,$sql);
+ $row = mysqli_fetch_assoc($run);
+
+
+
+    $fullname = $row['fullname'];
+
+
+?>
+
+
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -140,7 +163,7 @@
                     <div class="user-profile">
                         <div class="user-avatar">AD</div>
                         <div class="user-info">
-                            <h4>Admin User</h4>
+                            <h4><?php  echo $fullname  ?></h4>
                             <p>Administrator</p>
                         </div>
                     </div>

@@ -90,9 +90,9 @@ $type = "transfer";
         mysqli_query($conn, $recipientupdate);
 
         $sqli = "INSERT INTO transfers 
-                (user_id, recipient_id,transact_id,recipient,amount, description, status)
+                (user_id,recipient_id,transact_id,recipient,amount, description, status)
                 VALUES 
-                ('$userid', '$recipientid','$transact_id','$info','$amount','$description','success')";
+                ('$userid','$recipientid','$transact_id','$info','$amount','$description','success')";
 
         if (mysqli_query($conn, $sqli)) {
             echo "Transfer successful! Wallet updated.";
