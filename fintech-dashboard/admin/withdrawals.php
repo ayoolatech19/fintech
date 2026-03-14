@@ -1,6 +1,66 @@
 <?php 
 $page_title = "Withdrawal Requests";
 include '../includes/header-admin.php'; 
+
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "fintech";
+
+$conn = mysqli_connect($servername, $username, $password, $database);
+
+
+
+
+$sql = "SELECT COUNT(*) AS total_pending 
+        FROM withdraw 
+        WHERE status = 'pending'";
+
+$result = mysqli_query($conn, $sql);
+$rows = mysqli_fetch_assoc($result);
+
+
+
+$sqlw = "SELECT SUM(amount) AS totalamountpending 
+        FROM withdraw where status='pending'";
+
+$resultw = mysqli_query($conn, $sqlw);
+$roww = mysqli_fetch_assoc($resultw);
+
+$totalamountpending = $roww['totalamountpending'];
+
+
+
+$sqli="SELECT * from withdraw  ORDER BY withdraw_at ASC";
+  $run= mysqli_query($conn,$sqli);
+
+
+
+
+
+  if(isset($_POST['approve'])){
+
+$id = $_POST['withdraw_id'];
+
+$approve = "UPDATE withdraw SET status='approved' WHERE id='$id'";
+mysqli_query($conn,$approve);
+
+header("Location: withdrawal_requests.php");
+exit();
+}
+
+if(isset($_POST['reject'])){
+
+$id = $_POST['withdraw_id'];
+
+$reject = "UPDATE withdraw SET status='rejected' WHERE id='$id'";
+mysqli_query($conn,$reject);
+
+header("Location: withdrawal_requests.php");
+exit();
+}
+  
 ?>
 
 <!-- Alert -->
@@ -13,7 +73,7 @@ include '../includes/header-admin.php';
 <div class="grid grid-4 mb-4">
     <div class="card">
         <h4 style="font-size: 13px; color: var(--text-tertiary); margin-bottom: 8px;">Pending Requests</h4>
-        <h3 style="font-size: 24px; font-weight: 700; color: var(--warning);">5</h3>
+        <h3 style="font-size: 24px; font-weight: 700; color: var(--warning);"><?php echo $rows['total_pending']; ?></h3>
     </div>
     
     <div class="card">
@@ -28,7 +88,7 @@ include '../includes/header-admin.php';
     
     <div class="card">
         <h4 style="font-size: 13px; color: var(--text-tertiary); margin-bottom: 8px;">Total Amount Pending</h4>
-        <h3 style="font-size: 24px; font-weight: 700;">$8,400.00</h3>
+        <h3 style="font-size: 24px; font-weight: 700;"> $<?php echo $totalamountpending ?></h3>
     </div>
 </div>
 
@@ -100,195 +160,61 @@ include '../includes/header-admin.php';
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td><strong>#WD-00143</strong></td>
-                    <td>
-                        <div>
-                            <strong style="font-size: 14px;">Mike Chen</strong>
-                            <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 2px;">mike.chen@example.com</p>
-                        </div>
-                    </td>
-                    <td><strong>$1,200.00</strong></td>
-                    <td>Bank Transfer</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewDetails('WD-00143')">
-                            <i class="fas fa-eye"></i> View
-                        </button>
-                    </td>
-                    <td>Feb 01, 2026</td>
-                    <td><span class="badge badge-warning">Pending</span></td>
-                    <td>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-sm btn-success" onclick="approveWithdrawal('WD-00143')">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger" onclick="rejectWithdrawal('WD-00143')">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td><strong>#WD-00144</strong></td>
-                    <td>
-                        <div>
-                            <strong style="font-size: 14px;">Emily Davis</strong>
-                            <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 2px;">emily.d@example.com</p>
-                        </div>
-                    </td>
-                    <td><strong>$850.00</strong></td>
-                    <td>PayPal</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewDetails('WD-00144')">
-                            <i class="fas fa-eye"></i> View
-                        </button>
-                    </td>
-                    <td>Feb 01, 2026</td>
-                    <td><span class="badge badge-warning">Pending</span></td>
-                    <td>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-sm btn-success" onclick="approveWithdrawal('WD-00144')">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger" onclick="rejectWithdrawal('WD-00144')">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td><strong>#WD-00145</strong></td>
-                    <td>
-                        <div>
-                            <strong style="font-size: 14px;">Robert Brown</strong>
-                            <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 2px;">robert.b@example.com</p>
-                        </div>
-                    </td>
-                    <td><strong>$2,500.00</strong></td>
-                    <td>Bank Transfer</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewDetails('WD-00145')">
-                            <i class="fas fa-eye"></i> View
-                        </button>
-                    </td>
-                    <td>Feb 02, 2026</td>
-                    <td><span class="badge badge-warning">Pending</span></td>
-                    <td>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-sm btn-success" onclick="approveWithdrawal('WD-00145')">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger" onclick="rejectWithdrawal('WD-00145')">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td><strong>#WD-00146</strong></td>
-                    <td>
-                        <div>
-                            <strong style="font-size: 14px;">Lisa Anderson</strong>
-                            <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 2px;">lisa.a@example.com</p>
-                        </div>
-                    </td>
-                    <td><strong>$650.00</strong></td>
-                    <td>Cryptocurrency</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewDetails('WD-00146')">
-                            <i class="fas fa-eye"></i> View
-                        </button>
-                    </td>
-                    <td>Feb 02, 2026</td>
-                    <td><span class="badge badge-warning">Pending</span></td>
-                    <td>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-sm btn-success" onclick="approveWithdrawal('WD-00146')">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger" onclick="rejectWithdrawal('WD-00146')">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td><strong>#WD-00147</strong></td>
-                    <td>
-                        <div>
-                            <strong style="font-size: 14px;">David Wilson</strong>
-                            <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 2px;">david.w@example.com</p>
-                        </div>
-                    </td>
-                    <td><strong>$3,200.00</strong></td>
-                    <td>Bank Transfer</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewDetails('WD-00147')">
-                            <i class="fas fa-eye"></i> View
-                        </button>
-                    </td>
-                    <td>Feb 03, 2026</td>
-                    <td><span class="badge badge-warning">Pending</span></td>
-                    <td>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-sm btn-success" onclick="approveWithdrawal('WD-00147')">
-                                <i class="fas fa-check"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger" onclick="rejectWithdrawal('WD-00147')">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr style="background-color: var(--bg-secondary);">
-                    <td>-</td>
-                    <td><strong>#WD-00142</strong></td>
-                    <td>
-                        <div>
-                            <strong style="font-size: 14px;">John Doe</strong>
-                            <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 2px;">john.doe@example.com</p>
-                        </div>
-                    </td>
-                    <td><strong>$850.00</strong></td>
-                    <td>PayPal</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewDetails('WD-00142')">
-                            <i class="fas fa-eye"></i> View
-                        </button>
-                    </td>
-                    <td>Jan 28, 2026</td>
-                    <td><span class="badge badge-success">Approved</span></td>
-                    <td>
-                        <span style="font-size: 12px; color: var(--text-tertiary);">Processed</span>
-                    </td>
-                </tr>
-                <tr style="background-color: var(--bg-secondary);">
-                    <td>-</td>
-                    <td><strong>#WD-00141</strong></td>
-                    <td>
-                        <div>
-                            <strong style="font-size: 14px;">Sarah Williams</strong>
-                            <p style="font-size: 12px; color: var(--text-tertiary); margin-top: 2px;">sarah.w@example.com</p>
-                        </div>
-                    </td>
-                    <td><strong>$2,500.00</strong></td>
-                    <td>Bank Transfer</td>
-                    <td>
-                        <button class="btn btn-sm btn-secondary" onclick="viewDetails('WD-00141')">
-                            <i class="fas fa-eye"></i> View
-                        </button>
-                    </td>
-                    <td>Jan 20, 2026</td>
-                    <td><span class="badge badge-success">Approved</span></td>
-                    <td>
-                        <span style="font-size: 12px; color: var(--text-tertiary);">Processed</span>
-                    </td>
-                </tr>
+            <?php
+
+if (mysqli_num_rows($run) > 0) {
+
+while ($row = mysqli_fetch_assoc($run)) {
+
+echo "<tr>
+<td><input type='checkbox'></td>
+
+<td><strong>#WD-00".$row['transaction_id']."</strong></td>
+
+<td>
+<div>
+<strong style='font-size: 14px;'>".$row['user_id']."</strong>
+</div>
+</td>
+
+<td><strong>$".$row['amount']."</strong></td>
+
+<td>".$row['method']."</td>
+
+<td>
+<button class='btn btn-sm btn-secondary'>
+<i class='fas fa-eye'></i> View
+</button>
+</td>
+
+<td>".$row['withdraw_at']."</td>
+
+<td>
+<span class='badge badge-warning'>".$row['status']."</span>
+</td>
+<td>
+<form method='POST'>
+
+<input type='hidden' name='withdraw_id' value='".$row['transaction_id']."'>
+
+<button type='submit' name='approve' class='btn btn-sm btn-success'>
+<i class='fas fa-check'></i>
+</button>
+
+<button type='submit' name='reject' class='btn btn-sm btn-danger'>
+<i class='fas fa-times'></i>
+</button>
+
+</form>
+</td>
+
+</tr>";
+
+}
+
+}
+?>
+            
             </tbody>
         </table>
     </div>

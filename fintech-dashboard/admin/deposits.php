@@ -56,7 +56,7 @@ if (mysqli_num_rows($result) > 0) {
 
     while ($row = mysqli_fetch_assoc($result)) {
 
-        if ($row['status'] == 'completed') {
+        if ($row['status'] == 'approved') {
             $statusClass = 'badge-success';
         } elseif ($row['status'] == 'pending') {
             $statusClass = 'badge-warning';
