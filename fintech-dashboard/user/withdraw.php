@@ -45,8 +45,7 @@ $type = "withdraw";
         exit();
     }
 
-    $newprice = $wallet_balance - $amount;
-
+   
     $sql = "INSERT INTO withdraw (
         user_id, transaction_id, method,
         bank_acc, bank_name, acc_name,
@@ -71,26 +70,18 @@ $type = "withdraw";
        exit();
        }
 
+if (mysqli_query($conn, $sql)) {
 
-    if (mysqli_query($conn, $sql)) {
+echo "Withdrawal request submitted successfully";
 
-        $update = "UPDATE wallet 
-                   SET wallet_balance='$newprice' 
-                   WHERE user_id='$user_id'";
+} else {
 
-        if (mysqli_query($conn, $update)) {
-            echo "Withdrawal successful! Wallet updated to ₦$newprice";
-        } else {
-            echo "Wallet update failed";
-        }
+echo "Withdrawal request failed";
 
-    } else {
-        echo "Withdrawal insert failed";
-    }
-
+}
 
  $withdrawsql = "INSERT INTO transactionhistory (user_id,transaction_id,type,description,amount,status)
-                       VALUES ('$user_id','$transact_id','$type','$reasons','$amount','withdrawal completed')";
+                       VALUES ('$user_id','$transact_id','$type','$reasons','$amount','withdrawal pending')";
   
   $witdrawalrun= mysqli_query($conn,$withdrawsql);
    
