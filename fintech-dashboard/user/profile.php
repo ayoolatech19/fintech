@@ -10,6 +10,33 @@ $database = "fintech";
 $conn = mysqli_connect($servername, $username, $password, $database);
 
 
+
+ $id =   $_SESSION['user_id'];
+
+$checks = "SELECT * from signup where id= '$id'";
+$runs = mysqli_query($conn,$checks);
+
+ $rows = mysqli_fetch_assoc($runs);
+
+    $fullnames = $rows['fullname'];
+    $id = $rows['id'];
+    $membersince = $rows['joined_at'];
+
+
+
+    
+
+$sqlp = "SELECT wallet_id
+      FROM wallet
+      WHERE id = '$id'";
+
+
+$resultp = mysqli_query($conn, $sqlp);
+$rowp = mysqli_fetch_assoc($resultp);
+
+$wallet_id = $rowp ['wallet_id'];
+
+
 if (isset($_POST['update'])) {
 
 $fullname=$_POST['fullname'];
@@ -54,6 +81,7 @@ $run = mysqli_query($conn,$check);
     $fullnames = $row['fullname'];
     $emails = $row['email'];
     $phones = $row['phone'];
+
 
      if ($curpassword != $db_password) {
         echo "Current password is wrong!";
@@ -222,13 +250,13 @@ $run = mysqli_query($conn,$check);
     <div class="grid grid-3">
         <div>
             <h4 style="font-size: 13px; color: var(--text-tertiary); margin-bottom: 8px;">User ID</h4>
-            <p style="font-size: 14px; font-weight: 600;">USER-2024-001</p>
+            <p style="font-size: 14px; font-weight: 600;"><?php echo $id   ?></p>
         </div>
         
         <div>
             <h4 style="font-size: 13px; color: var(--text-tertiary); margin-bottom: 8px;">Wallet ID</h4>
             <div style="display: flex; gap: 8px; align-items: center;">
-                <p style="font-size: 14px; font-weight: 600;">FTP-2024-USER-001</p>
+                <p style="font-size: 14px; font-weight: 600;"><?php echo $wallet_id ?></p>
                 <button class="btn btn-sm btn-secondary" onclick="copyToClipboard('FTP-2024-USER-001')">
                     <i class="fas fa-copy"></i>
                 </button>
@@ -237,7 +265,7 @@ $run = mysqli_query($conn,$check);
         
         <div>
             <h4 style="font-size: 13px; color: var(--text-tertiary); margin-bottom: 8px;">Member Since</h4>
-            <p style="font-size: 14px; font-weight: 600;">January 15, 2024</p>
+            <p style="font-size: 14px; font-weight: 600;"><?php echo  $membersince   ?></p>
         </div>
     </div>
 </div>
